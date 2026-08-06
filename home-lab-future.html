@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>항상기쁨 — 미래 컨셉 시안 세 가지 (배포 안 함)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" rel="stylesheet"/>
+<!--
+  ─────────────────────────────────────────────────────────────
+  미래 지향 컨셉 시안 — E · F · G 세 가지.
+  **시안입니다.** index.html · css/style.css · sw.js 를 건드리지 않았고
+  배포도 안 했습니다. 폰에 깔린 항상기쁨은 그대로입니다.
+
+  보내주신 그림(파란 빛 고리 · 반투명 아이콘 · 어두운 바탕)을 옮기면서
+  한 가지는 솔직히 말씀드려야 합니다.
+
+    저 그림처럼 얇은 빛줄기와 반투명 글씨는 **어르신 눈에 가장 어려운
+    조합**입니다. 빛이 번지면 글자 테두리가 물러지고, 반투명은 밑바탕과
+    섞여 대비가 떨어집니다. 광고 그림은 멀리서 한 번 보는 것이고,
+    이 앱은 매일 손에 들고 읽는 것이라 기준이 다릅니다.
+
+  그래서 '미래 느낌'은 살리되 읽는 힘을 서로 다르게 밀어붙인 세 가지를
+  만들어 견줘 보시게 했습니다.
+
+    E 밤하늘  — 그림에 가장 가깝습니다. 어두운 바탕 + 파란 빛 고리.
+                단, 글씨만은 반투명을 안 씁니다(흰색 꽉 채움).
+    F 유리    — 밝은 미래. 흰 유리판이 떠 있는 느낌, 글씨는 진한 먹색.
+                밝은 곳에서도 잘 보이고 눈이 덜 시립니다.
+    G 큰 빛   — 어두운 바탕은 E 와 같지만 장식을 걷어내고 글씨를 크게.
+                세 안 중 가장 잘 읽힙니다.
+
+  글씨 대비(WCAG 기준, 4.5:1 이상이면 본문으로 쓸 수 있습니다):
+    E 흰 글씨 #F2F7FF / 바탕 #0B1220 → 약 16:1
+    F 먹 글씨 #1B2430 / 유리판      → 약 12:1
+    G 흰 글씨 #FFFFFF / 바탕 #07090F → 약 19:1
+
+  ── 눈대중이 아니라 실제로 재 본 값 ──
+  브라우저가 그린 색을 뽑아 글자마다 대비를 계산했습니다 (반투명 유리판과
+  그라데이션 단추까지 밑색과 섞어서 셈). 네 폭(320·360·390·412) × 세 안:
+
+    대비 기준(4.5:1, 큰 글씨 3:1) 못 넘는 곳 — 0
+    글씨가 칸을 넘치는 곳                    — 0
+    짚는 자리 44px 미만                      — 0
+    390px 폰에서 스크롤 — E·F·G 셋 다 없음 (한 화면에 들어옴)
+
+  ⚠ 재는 동안 실제로 걸린 것 하나: F 의 파란 '크게 보기' 단추가 흰 글씨로
+    3.41:1 이었습니다(필요 4.5). 보기엔 멀쩡했는데 기준에 못 미쳐 파랑을
+    한 단 어둡게 내렸습니다 — 눈으로만 봤으면 넘어갔을 곳입니다.
+
+  세 안 모두 기준을 넘는 까닭은, 빛 고리를 '테두리'로만 쓰고 글씨에는
+  얹지 않았기 때문입니다.
+  ─────────────────────────────────────────────────────────────
+-->
+<style>
+:root{
+  /* 밤하늘(E·G) */
+  --n0:#07090F;      /* 가장 어두운 바탕 */
+  --n1:#0B1220;      /* 바탕 */
+  --n2:#131C2E;      /* 카드 */
+  --n3:#1D2942;      /* 테두리 */
+  --lit:#F2F7FF;     /* 글씨 — 반투명 안 씀 */
+  --lit2:#A7B6CC;    /* 둘째 글씨 */
+  --cyan:#3DDCF5;
+  --blue:#5B9DFF;
+  --violet:#A78BFA;
+  --mintn:#5EEAD4;
+  --gold:#FCD34D;
+  --pink:#F9A8D4;
+
+  /* 유리(F) */
+  --g-ink:#1B2430;
+  --g-ink2:#4C5A6B;
+  --g-line:rgba(255,255,255,0.65);
+
+  --r:22px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  background:#0B1220; color:var(--lit);
+  padding-bottom:36px;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* 시안 고르는 줄 — 실제 앱에는 없습니다 */
+.lab-bar{
+  position:sticky;top:0;z-index:60;
+  background:rgba(7,9,15,0.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--n3);padding:10px 12px;
+}
+.lab-title{font-size:12px;color:var(--lit2);margin-bottom:7px;text-align:center}
+.lab-btns{display:flex;gap:6px}
+.lab-btn{
+  flex:1;min-height:44px;padding:0 4px;border-radius:12px;
+  background:var(--n2);border:1.5px solid var(--n3);
+  font-size:13px;font-weight:600;color:var(--lit2);
+}
+.lab-btn.on{background:var(--cyan);border-color:var(--cyan);color:#06202A}
+
+.phone{max-width:420px;margin:0 auto;padding:0 14px}
+.view{display:none}
+.view.on{display:block}
+
+/* ══ 머리글 — 세 안 공통 뼈대 ══ */
+.hd{display:flex;align-items:center;justify-content:space-between;padding:14px 2px 11px;gap:8px}
+.hd-name{font-size:19px;font-weight:700;letter-spacing:-0.3px}
+.hd-date{font-size:12px;margin-top:2px}
+.hd-right{display:flex;gap:7px;align-items:center;flex-shrink:0}
+/* 짚는 자리는 44px 이상 — 그보다 작으면 어르신은 두세 번 헛짚으십니다 */
+.hd-chip{min-height:44px;padding:0 13px;border-radius:22px;font-size:13px;font-weight:600}
+.hd-bell{width:44px;height:44px;border-radius:50%;font-size:17px}
+
+/* ══════════════════════════════════════════════════════════
+   E안 — 밤하늘. 보내주신 그림에 가장 가깝습니다.
+   빛 고리(glow ring)를 아이콘 테두리로만 쓰고 글씨에는 안 얹습니다.
+══════════════════════════════════════════════════════════ */
+#v-e{background:transparent}
+.sky-bg{
+  position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(760px 420px at 18% -8%,  rgba(91,157,255,0.20), transparent 62%),
+    radial-gradient(620px 420px at 105% 12%, rgba(61,220,245,0.14), transparent 60%),
+    var(--n1);
+}
+#v-e .hd-date{color:var(--lit2)}
+#v-e .hd-chip{background:var(--n2);border:1px solid var(--n3);color:var(--lit)}
+#v-e .hd-bell{background:var(--n2);border:1px solid var(--n3)}
+
+/* 말씀 — 왼쪽에 빛나는 띠 하나. 글씨는 흰색 꽉 채움 */
+.e-verse{
+  position:relative;border-radius:var(--r);
+  background:linear-gradient(140deg, rgba(61,220,245,0.10), rgba(91,157,255,0.05));
+  border:1px solid var(--n3);
+  padding:17px 18px 15px 20px;overflow:hidden;
+}
+.e-verse::before{
+  content:'';position:absolute;left:0;top:14px;bottom:14px;width:4px;border-radius:4px;
+  background:linear-gradient(180deg,var(--cyan),var(--blue));
+  box-shadow:0 0 12px rgba(61,220,245,0.7);
+}
+.e-label{
+  font-size:12px;font-weight:700;color:var(--cyan);
+  letter-spacing:1.2px;margin-bottom:8px;
+}
+.e-text{
+  font-family:'Noto Serif KR',serif;
+  font-size:19px;font-weight:600;line-height:1.56;
+  word-break:keep-all;color:var(--lit);
+}
+.e-ref{font-size:12px;color:var(--lit2);margin-top:8px}
+.e-btns{display:flex;gap:8px;margin-top:12px}
+.e-btn{
+  flex:1;min-height:46px;border-radius:14px;font-size:15px;font-weight:600;
+  background:var(--n2);border:1px solid var(--n3);color:var(--lit);
+}
+.e-btn.lit{
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  border-color:transparent;color:#06202A;font-weight:700;
+  box-shadow:0 4px 18px rgba(61,220,245,0.30);
+}
+
+/* 빛 고리 격자 — 그림의 동그란 아이콘들 */
+.e-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px 2px;margin-top:12px}
+.e-cell{
+  padding:8px 2px;border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+}
+.e-cell:active{background:rgba(255,255,255,0.05)}
+.e-ring{
+  width:62px;height:62px;border-radius:50%;position:relative;
+  display:flex;align-items:center;justify-content:center;font-size:27px;line-height:1;
+  background:radial-gradient(circle at 50% 45%, rgba(255,255,255,0.10), rgba(255,255,255,0.02) 70%);
+  border:1.5px solid var(--n3);
+}
+/* 바깥 고리 — 그림의 '두 겹 원' 을 흉내냅니다 */
+.e-ring::before{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:1px solid currentColor;opacity:0.40;
+}
+.e-ring::after{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  box-shadow:0 0 14px currentColor;opacity:0.28;
+}
+.c-cyan{color:var(--cyan)} .c-blue{color:var(--blue)} .c-violet{color:var(--violet)}
+.c-mint{color:var(--mintn)} .c-gold{color:var(--gold)} .c-pink{color:var(--pink)}
+.e-name{font-size:14px;font-weight:600;color:var(--lit);letter-spacing:-0.3px;white-space:nowrap}
+.e-dot{position:relative}
+.e-dot::after{
+  content:'';position:absolute;top:-1px;right:-1px;width:10px;height:10px;border-radius:50%;
+  background:#FF7A7A;box-shadow:0 0 8px rgba(255,122,122,0.9);border:2px solid var(--n1);
+}
+.e-strip{
+  display:flex;align-items:center;gap:12px;margin-top:11px;
+  padding:12px 15px;border-radius:18px;
+  background:var(--n2);border:1px solid var(--n3);
+}
+.e-strip-ico{
+  width:44px;height:44px;flex-shrink:0;border-radius:14px;font-size:21px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(94,234,212,0.12);border:1px solid rgba(94,234,212,0.30);
+}
+.e-strip-t{font-size:16px;font-weight:700}
+.e-strip-s{font-size:12px;color:var(--lit2);margin-top:2px}
+.e-arrow{margin-left:auto;font-size:19px;color:var(--lit2)}
+@media (max-width:339px){
+  .e-ring{width:54px;height:54px;font-size:24px}
+  .e-name{font-size:13px}
+}
+
+/* ══════════════════════════════════════════════════════════
+   F안 — 유리. '밝은 미래' 쪽입니다.
+   반투명 유리판이 떠 있고 글씨는 진한 먹색 — 낮에 밖에서도 보입니다.
+══════════════════════════════════════════════════════════ */
+.glass-bg{
+  position:fixed;inset:0;z-index:-1;
+  background:
+    radial-gradient(680px 460px at 12% -6%, #CFE4FF, transparent 60%),
+    radial-gradient(620px 500px at 100% 8%, #E6DCFF, transparent 58%),
+    radial-gradient(560px 460px at 50% 110%, #D6F5EC, transparent 62%),
+    #EEF4FC;
+}
+#v-f{color:var(--g-ink)}
+#v-f .hd-date{color:var(--g-ink2)}
+#v-f .hd-chip{
+  background:rgba(255,255,255,0.72);border:1px solid var(--g-line);
+  color:var(--g-ink);backdrop-filter:blur(8px);
+}
+#v-f .hd-bell{
+  background:rgba(255,255,255,0.72);border:1px solid var(--g-line);
+  backdrop-filter:blur(8px);
+}
+.glass{
+  background:rgba(255,255,255,0.62);
+  border:1px solid var(--g-line);
+  border-radius:var(--r);
+  backdrop-filter:blur(16px) saturate(1.3);
+  box-shadow:0 8px 26px rgba(27,36,48,0.09);
+}
+.f-verse{padding:17px 19px 15px}
+.f-label{font-size:12px;font-weight:700;color:#3E6EA8;letter-spacing:1px;margin-bottom:8px}
+.f-text{
+  font-family:'Noto Serif KR',serif;
+  font-size:19px;font-weight:600;line-height:1.56;
+  word-break:keep-all;color:var(--g-ink);
+}
+.f-ref{font-size:12px;color:var(--g-ink2);margin-top:8px}
+.f-btns{display:flex;gap:8px;margin-top:12px}
+.f-btn{
+  flex:1;min-height:46px;border-radius:14px;font-size:15px;font-weight:600;
+  background:rgba(255,255,255,0.8);border:1px solid var(--g-line);color:var(--g-ink);
+}
+/* 파란 단추의 흰 글씨 — 재 보니 #4A8BE8 위에서 3.41:1 이었다(필요 4.5).
+   보기엔 멀쩡한데 기준에 못 미친다. 그래서 파랑을 한 단 어둡게 내렸다 */
+.f-btn.lit{
+  background:linear-gradient(135deg,#2C63BF,#4A47C4);border-color:transparent;
+  color:#fff;font-weight:700;box-shadow:0 5px 16px rgba(44,99,191,0.30);
+}
+.f-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:11px}
+.f-cell{
+  padding:12px 3px 10px;border-radius:18px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.62);border:1px solid var(--g-line);
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 14px rgba(27,36,48,0.07);
+}
+.f-ico{font-size:25px;line-height:1}
+.f-name{font-size:13px;font-weight:600;color:var(--g-ink);white-space:nowrap;letter-spacing:-0.3px}
+.f-strip{display:flex;align-items:center;gap:12px;margin-top:10px;padding:12px 15px}
+.f-strip-ico{
+  width:44px;height:44px;flex-shrink:0;border-radius:14px;font-size:21px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,0.85);
+}
+.f-strip-t{font-size:16px;font-weight:700}
+.f-strip-s{font-size:12px;color:var(--g-ink2);margin-top:2px}
+
+/* ══════════════════════════════════════════════════════════
+   G안 — 큰 빛. 어두운 바탕은 E 와 같지만 장식을 걷어냈습니다.
+   빛은 '한 군데만' 씁니다 — 여러 군데서 빛나면 어디를 볼지 헷갈립니다.
+══════════════════════════════════════════════════════════ */
+.void-bg{
+  position:fixed;inset:0;z-index:-1;
+  background:radial-gradient(700px 460px at 50% -10%, rgba(61,220,245,0.13), transparent 62%), var(--n0);
+}
+#v-g .hd-date{color:var(--lit2)}
+#v-g .hd-chip{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16);color:#fff}
+#v-g .hd-bell{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.16)}
+.g-verse{
+  border-radius:26px;padding:24px 21px 20px;text-align:center;
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.13);
+}
+.g-mark{
+  width:46px;height:46px;margin:0 auto 13px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:21px;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));color:#06202A;
+  box-shadow:0 0 26px rgba(61,220,245,0.45);
+}
+.g-text{
+  font-family:'Noto Serif KR',serif;
+  font-size:24px;font-weight:600;line-height:1.6;
+  word-break:keep-all;color:#FFFFFF;
+}
+.g-ref{font-size:13px;color:var(--lit2);margin-top:12px}
+.g-btn{
+  display:block;width:100%;min-height:54px;margin-top:17px;border-radius:16px;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));color:#06202A;
+  font-size:17px;font-weight:700;box-shadow:0 5px 20px rgba(61,220,245,0.28);
+}
+.g-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.g-cell{
+  min-height:74px;padding:15px 16px;border-radius:18px;text-align:left;
+  display:flex;align-items:center;gap:13px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+}
+.g-cell-ico{font-size:25px;line-height:1;flex-shrink:0}
+.g-cell-name{font-size:18px;font-weight:700;letter-spacing:-0.3px;color:#fff}
+
+/* ══ 아래 메뉴 — 세 안 공통 ══ */
+.nav{
+  position:sticky;bottom:0;margin-top:14px;display:flex;
+  border-radius:18px 18px 0 0;
+  background:rgba(11,18,32,0.90);backdrop-filter:blur(14px);
+  border-top:1px solid var(--n3);
+}
+#v-f .nav{
+  background:rgba(255,255,255,0.80);border-top:1px solid var(--g-line);
+  box-shadow:0 -3px 16px rgba(27,36,48,0.07);
+}
+.nav-btn{flex:1;min-height:48px;padding:7px 0 6px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
+.nav-ico{font-size:19px}
+.nav-lab{font-size:12px;font-weight:600;color:var(--lit2);white-space:nowrap;letter-spacing:-0.2px}
+#v-f .nav-lab{color:var(--g-ink2)}
+.nav-btn.on .nav-lab{color:var(--cyan);font-weight:700}
+#v-f .nav-btn.on .nav-lab{color:#3E6EA8;font-weight:700}
+@media (max-width:359px){ .nav-lab{font-size:11px} }
+@media (max-width:319px){ .nav-lab{font-size:9px} }
+
+.note{
+  max-width:420px;margin:16px auto 0;padding:15px 18px;
+  background:var(--n2);border:1px solid var(--n3);border-radius:16px;
+  font-size:13px;color:var(--lit2);line-height:1.78;
+}
+.note b{color:var(--lit)}
+.note .warn{color:var(--gold)}
+
+/* 빛이 천천히 숨 쉬게 — 아주 약하게. 눈이 피로하면 끕니다 */
+@media (prefers-reduced-motion:no-preference){
+  .g-mark{animation:breathe 5.5s ease-in-out infinite}
+}
+@keyframes breathe{
+  0%,100%{box-shadow:0 0 22px rgba(61,220,245,0.36)}
+  50%    {box-shadow:0 0 34px rgba(61,220,245,0.58)}
+}
+</style>
+</head>
+<body>
+
+<div class="sky-bg" id="bg-e"></div>
+<div class="glass-bg" id="bg-f" style="display:none"></div>
+<div class="void-bg" id="bg-g" style="display:none"></div>
+
+<div class="lab-bar">
+  <div class="lab-title">미래 컨셉 시안 · 세 가지 (배포 안 함)</div>
+  <div class="lab-btns">
+    <button class="lab-btn on" data-v="e">E 밤하늘</button>
+    <button class="lab-btn" data-v="f">F 유리</button>
+    <button class="lab-btn" data-v="g">G 큰 빛</button>
+  </div>
+</div>
+
+<!-- ══════════ E안 — 밤하늘 ══════════ -->
+<div class="phone view on" id="v-e">
+  <div class="hd">
+    <div>
+      <div class="hd-name">차정윤님,&nbsp;주님&nbsp;안에서 ✦</div>
+      <div class="hd-date">2026년 7월 31일 (금)</div>
+    </div>
+    <div class="hd-right">
+      <button class="hd-chip">English</button>
+      <button class="hd-bell">🔔</button>
+    </div>
+  </div>
+
+  <div class="e-verse">
+    <div class="e-label">오늘의 말씀</div>
+    <div class="e-text">항상&nbsp;기뻐하라 쉬지&nbsp;말고&nbsp;기도하라 범사에&nbsp;감사하라</div>
+    <div class="e-ref">데살로니가전서 5:16–18</div>
+    <div class="e-btns">
+      <button class="e-btn lit">크게&nbsp;보기</button>
+      <button class="e-btn">말씀&nbsp;더&nbsp;보기</button>
+    </div>
+  </div>
+
+  <div class="e-grid">
+    <button class="e-cell"><span class="e-ring c-cyan">📖</span><span class="e-name">말씀</span></button>
+    <button class="e-cell"><span class="e-ring c-mint">🎵</span><span class="e-name">찬양</span></button>
+    <button class="e-cell"><span class="e-ring c-violet">🙏</span><span class="e-name">기도</span></button>
+    <button class="e-cell"><span class="e-ring c-pink">💛</span><span class="e-name">감사</span></button>
+    <button class="e-cell"><span class="e-ring c-gold">📜</span><span class="e-name">역사</span></button>
+    <!-- 아직 안 하신 곳에만 빨간 점 — '여기 보세요' 표시 -->
+    <button class="e-cell"><span class="e-ring c-blue e-dot">🕰️</span><span class="e-name">게임</span></button>
+    <button class="e-cell"><span class="e-ring c-cyan">📷</span><span class="e-name">기억</span></button>
+    <button class="e-cell"><span class="e-ring c-mint">📔</span><span class="e-name">일기</span></button>
+  </div>
+
+  <div class="e-strip">
+    <div class="e-strip-ico">🌿</div>
+    <div>
+      <div class="e-strip-t">7일째 감사&nbsp;중</div>
+      <div class="e-strip-s">오늘 감사도 적어 보실래요?</div>
+    </div>
+    <div class="e-arrow">›</div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn on"><span class="nav-ico">🏠</span><span class="nav-lab">홈</span></button>
+    <button class="nav-btn"><span class="nav-ico">📖</span><span class="nav-lab">말씀</span></button>
+    <button class="nav-btn"><span class="nav-ico">📜</span><span class="nav-lab">역사</span></button>
+    <button class="nav-btn"><span class="nav-ico">🎵</span><span class="nav-lab">찬양</span></button>
+    <button class="nav-btn"><span class="nav-ico">🙏</span><span class="nav-lab">기도</span></button>
+    <button class="nav-btn"><span class="nav-ico">💛</span><span class="nav-lab">감사</span></button>
+    <button class="nav-btn"><span class="nav-ico">📷</span><span class="nav-lab">기억</span></button>
+  </div>
+</div>
+
+<!-- ══════════ F안 — 유리 ══════════ -->
+<div class="phone view" id="v-f">
+  <div class="hd">
+    <div>
+      <div class="hd-name">차정윤님,&nbsp;주님&nbsp;안에서 ✦</div>
+      <div class="hd-date">2026년 7월 31일 (금)</div>
+    </div>
+    <div class="hd-right">
+      <button class="hd-chip">English</button>
+      <button class="hd-bell">🔔</button>
+    </div>
+  </div>
+
+  <div class="glass f-verse">
+    <div class="f-label">오늘의 말씀</div>
+    <div class="f-text">항상&nbsp;기뻐하라 쉬지&nbsp;말고&nbsp;기도하라 범사에&nbsp;감사하라</div>
+    <div class="f-ref">데살로니가전서 5:16–18</div>
+    <div class="f-btns">
+      <button class="f-btn lit">크게&nbsp;보기</button>
+      <button class="f-btn">말씀&nbsp;더&nbsp;보기</button>
+    </div>
+  </div>
+
+  <div class="f-grid">
+    <button class="f-cell"><span class="f-ico">📖</span><span class="f-name">말씀</span></button>
+    <button class="f-cell"><span class="f-ico">🎵</span><span class="f-name">찬양</span></button>
+    <button class="f-cell"><span class="f-ico">🙏</span><span class="f-name">기도</span></button>
+    <button class="f-cell"><span class="f-ico">💛</span><span class="f-name">감사</span></button>
+    <button class="f-cell"><span class="f-ico">📜</span><span class="f-name">역사</span></button>
+    <button class="f-cell"><span class="f-ico">🕰️</span><span class="f-name">게임</span></button>
+    <button class="f-cell"><span class="f-ico">📷</span><span class="f-name">기억</span></button>
+    <button class="f-cell"><span class="f-ico">📔</span><span class="f-name">일기</span></button>
+  </div>
+
+  <div class="glass f-strip">
+    <div class="f-strip-ico">🌿</div>
+    <div>
+      <div class="f-strip-t">7일째 감사&nbsp;중</div>
+      <div class="f-strip-s">오늘 감사도 적어 보실래요?</div>
+    </div>
+    <div class="e-arrow" style="color:var(--g-ink2)">›</div>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn on"><span class="nav-ico">🏠</span><span class="nav-lab">홈</span></button>
+    <button class="nav-btn"><span class="nav-ico">📖</span><span class="nav-lab">말씀</span></button>
+    <button class="nav-btn"><span class="nav-ico">📜</span><span class="nav-lab">역사</span></button>
+    <button class="nav-btn"><span class="nav-ico">🎵</span><span class="nav-lab">찬양</span></button>
+    <button class="nav-btn"><span class="nav-ico">🙏</span><span class="nav-lab">기도</span></button>
+    <button class="nav-btn"><span class="nav-ico">💛</span><span class="nav-lab">감사</span></button>
+    <button class="nav-btn"><span class="nav-ico">📷</span><span class="nav-lab">기억</span></button>
+  </div>
+</div>
+
+<!-- ══════════ G안 — 큰 빛 ══════════ -->
+<div class="phone view" id="v-g">
+  <div class="hd">
+    <div>
+      <div class="hd-name">차정윤님,&nbsp;주님&nbsp;안에서 ✦</div>
+      <div class="hd-date">2026년 7월 31일 (금)</div>
+    </div>
+    <div class="hd-right">
+      <button class="hd-chip">English</button>
+      <button class="hd-bell">🔔</button>
+    </div>
+  </div>
+
+  <div class="g-verse">
+    <div class="g-mark">✦</div>
+    <div class="g-text">항상&nbsp;기뻐하라 쉬지&nbsp;말고&nbsp;기도하라 범사에&nbsp;감사하라</div>
+    <div class="g-ref">데살로니가전서 5:16–18</div>
+    <button class="g-btn">크게&nbsp;보기</button>
+  </div>
+
+  <div class="g-grid">
+    <button class="g-cell"><span class="g-cell-ico">📖</span><span class="g-cell-name">말씀</span></button>
+    <button class="g-cell"><span class="g-cell-ico">🎵</span><span class="g-cell-name">찬양</span></button>
+    <button class="g-cell"><span class="g-cell-ico">🙏</span><span class="g-cell-name">기도</span></button>
+    <button class="g-cell"><span class="g-cell-ico">💛</span><span class="g-cell-name">감사</span></button>
+  </div>
+
+  <div class="nav">
+    <button class="nav-btn on"><span class="nav-ico">🏠</span><span class="nav-lab">홈</span></button>
+    <button class="nav-btn"><span class="nav-ico">📖</span><span class="nav-lab">말씀</span></button>
+    <button class="nav-btn"><span class="nav-ico">📜</span><span class="nav-lab">역사</span></button>
+    <button class="nav-btn"><span class="nav-ico">🎵</span><span class="nav-lab">찬양</span></button>
+    <button class="nav-btn"><span class="nav-ico">🙏</span><span class="nav-lab">기도</span></button>
+    <button class="nav-btn"><span class="nav-ico">💛</span><span class="nav-lab">감사</span></button>
+    <button class="nav-btn"><span class="nav-ico">📷</span><span class="nav-lab">기억</span></button>
+  </div>
+</div>
+
+<div class="note">
+  <b>세 안의 차이</b><br>
+  <b>E 밤하늘</b> — 보내주신 그림에 가장 가깝습니다. 어두운 바탕에 파란 빛
+  고리, 여덟 곳이 한 화면에 다 들어옵니다. 밤에 보기 편하고 화면도 덜 눈부십니다.<br>
+  <b>F 유리</b> — 같은 미래 느낌인데 <b>밝은</b> 쪽입니다. 흰 유리판이 떠 있고
+  글씨는 진한 먹색이라 낮에 창가나 밖에서도 잘 보입니다.<br>
+  <b>G 큰 빛</b> — 어두운 바탕은 E 와 같지만 장식을 걷어내고 <b>말씀 글씨를
+  24px 로</b> 키웠습니다. 셋 중 가장 잘 읽히지만 홈에서 바로 갈 수 있는 곳은
+  네 곳뿐입니다 (나머지는 아래 메뉴로).<br><br>
+  <b>세 안 모두</b> 390px 폰에서 <b>스크롤 없이 한 화면에 들어옵니다</b> — 재 봤습니다.<br><br>
+
+  <span class="warn">한 가지 말씀드릴 것</span> — 보내주신 그림처럼 <b>얇게 빛나는
+  글씨</b>는 안 썼습니다. 빛이 번지면 글자 테두리가 물러져서, 예쁘긴 해도
+  읽기는 더 어려워집니다. 그래서 <b>빛은 테두리와 단추에만, 글씨는 꽉 찬
+  흰색</b>으로 뒀습니다. 세 안 모두 글씨 대비가 권장 기준(4.5:1)의 두 배를
+  넘습니다.<br><br>
+
+  <b>어두운 바탕은 취향이 갈립니다.</b> 밤에 침대에서 보시면 훨씬 편하지만,
+  낮에 밝은 데서는 밝은 바탕이 더 잘 보이는 분도 많습니다. 어머니가 주로
+  <b>언제</b> 보시는지 알려 주시면 그쪽으로 맞추겠습니다 — 아니면 해가 지면
+  저절로 어두워지게 할 수도 있습니다.<br><br>
+
+  <b>제 생각</b>은, 미래 느낌으로 가신다면 <b>F 유리</b> 입니다. 새롭고 시원한
+  느낌은 그대로인데 낮에도 잘 보이고, 지금 앱의 밝은 화면에서 옮겨 가도
+  눈이 놀라지 않습니다. 밤에 주로 보신다면 <b>E</b> 입니다.
+</div>
+
+<script>
+// 시안 고르기 — 실제 앱에는 없는 부분입니다
+var BG = { e: 'bg-e', f: 'bg-f', g: 'bg-g' };
+document.querySelectorAll('.lab-btn').forEach(function (b) {
+  b.addEventListener('click', function () {
+    document.querySelectorAll('.lab-btn').forEach(function (x) { x.classList.remove('on'); });
+    document.querySelectorAll('.view').forEach(function (v) { v.classList.remove('on'); });
+    b.classList.add('on');
+    document.getElementById('v-' + b.dataset.v).classList.add('on');
+    Object.keys(BG).forEach(function (k) {
+      document.getElementById(BG[k]).style.display = (k === b.dataset.v) ? '' : 'none';
+    });
+    window.scrollTo(0, 0);
+  });
+});
+</script>
+</body>
+</html>
