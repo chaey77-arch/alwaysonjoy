@@ -49,6 +49,38 @@ function newClientId() {
 // ─── Init ────────────────────────────────────────────────
 function init() {
   State.user = Store.load('user', null);
+
+  // 사용자가 이미 있다면 비밀번호 확인
+  if (State.user && State.user.password) {
+    const savedPassword = State.user.password;
+    let attempts = 0;
+    const maxAttempts = 3;
+
+    while (attempts < maxAttempts) {
+      const inputPassword = prompt(`안녕하세요, ${State.user.name}님!\n비밀번호를 입력해주세요:`);
+
+      if (inputPassword === null) {
+        // 취소 버튼
+        alert('비밀번호를 입력하지 않으면 앱을 사용할 수 없습니다.');
+        attempts++;
+        continue;
+      }
+
+      if (inputPassword === savedPassword) {
+        // 비밀번호 일치
+        break;
+      } else {
+        attempts++;
+        if (attempts < maxAttempts) {
+          alert(`비밀번호가 틀렸습니다. (${attempts}/${maxAttempts})`);
+        } else {
+          alert('비밀번호를 3번 틀렸습니다. 페이지를 새로고침하여 다시 시도하세요.');
+          return;  // 앱 초기화 중단
+        }
+      }
+    }
+  }
+
   State.lang = Store.load('lang', 'ko');
   State.gratitude = Store.load('gratitude', []);
   State.prayers = Store.load('prayers', []);
@@ -143,22 +175,22 @@ function switchTab(tab) {
 
 // ─── Onboarding ──────────────────────────────────────────
 function bindOnboard() {
-  // 나이를 묻지 않는다. 어머니께 권했더니 "이런건 어릴때 하는 거야,
-  // 난 하기 싫어" 하셨다 — 첫 화면에 '어르신 · 70대 이상' 이 골라져
-  // 있는 것을 보신 것이다. 앱이 당신을 그렇게 부르는 순간
-  // '내 것이 아니다' 가 된다.
-  //
-  // ageGroup 은 저장만 하고 어디서도 읽지 않았다 (셈해 보니 쓰는 곳이
-  // 0곳이었다). 내용이 달라지지도 않는 것을 물어서 마음만 상하게 한 셈이다.
-  // 그래서 물음 자체를 없앴다 — 나이로 갈리는 문이 아니라, 어린아이와
-  // 같이 들어가는 문 하나만 둔다 (누가복음 18:17).
   document.getElementById('btn-start')?.addEventListener('click', () => {
     const name = (document.getElementById('onboard-name')?.value || '').trim();
-    if (!name) { document.getElementById('onboard-name')?.focus(); showToast(t('obNameRequired')); return; }
-    // ⚠ ageGroup 을 넣지 않는다. 예전에 쓰시던 분의 기록에는 남아 있을 수
-    //   있는데, 그건 지우지 않는다 — 읽는 곳이 없으니 해가 없고,
-    //   지우자고 저장된 기록을 건드리면 이름·가입일까지 위험해진다.
-    State.user = { name, joinDate: new Date().toISOString() };
+    const password = (document.getElementById('onboard-password')?.value || '').trim();
+
+    if (!name) {
+      document.getElementById('onboard-name')?.focus();
+      showToast('이름을 입력해주세요');
+      return;
+    }
+    if (!password || password.length < 4) {
+      document.getElementById('onboard-password')?.focus();
+      showToast('비밀번호는 4자리 이상 입력해주세요');
+      return;
+    }
+
+    State.user = { name, password, joinDate: new Date().toISOString() };
     Store.save('user', State.user);
     showScreen('main');
     renderAll();
@@ -2408,6 +2440,95 @@ function revealCard(el) {
     updateCollapseA11y(card);
     saveCollapseState();
   }
+}
+
+// ─── 데이터 백업/복원 ────────────────────────────────────
+function exportData() {
+  try {
+    // localStorage에서 모든 앱 데이터 수집
+    const data = {
+      version: '1.0',
+      exportDate: new Date().toISOString(),
+      gratitude: State.gratitude || [],
+      prayers: State.prayers || [],
+      immanuel: State.immanuel || [],
+      memories: State.memories || { people: [], myVerses: [], myFaith: {} },
+      bibleBook: State.bibleBook,
+      bibleChapter: State.bibleChapter,
+      bibleLast: State.bibleLast,
+      user: State.user
+    };
+
+    // JSON 파일로 다운로드
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `alwaysjoy-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast('✅ 백업 파일이 다운로드되었습니다');
+  } catch (e) {
+    console.error('백업 실패:', e);
+    showToast('❌ 백업에 실패했습니다');
+  }
+}
+
+function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+
+      // 확인 메시지
+      if (!confirm(`백업 파일을 불러오시겠습니까?\n\n내보낸 날짜: ${new Date(data.exportDate).toLocaleString('ko-KR')}\n감사 기록: ${data.gratitude?.length || 0}개\n기도 제목: ${data.prayers?.length || 0}개\n임마누엘 일기: ${data.immanuel?.length || 0}개\n\n⚠️ 현재 데이터를 덮어씁니다!`)) {
+        input.value = '';
+        return;
+      }
+
+      // 데이터 복원
+      if (data.gratitude) {
+        State.gratitude = data.gratitude;
+        Store.save('gratitude', data.gratitude);
+      }
+      if (data.prayers) {
+        State.prayers = data.prayers;
+        Store.save('prayers', data.prayers);
+      }
+      if (data.immanuel) {
+        State.immanuel = data.immanuel;
+        Store.save('immanuel', data.immanuel);
+      }
+      if (data.memories) {
+        State.memories = data.memories;
+        Store.save('memories', data.memories);
+      }
+      if (data.bibleBook) State.bibleBook = data.bibleBook;
+      if (data.bibleChapter) State.bibleChapter = data.bibleChapter;
+      if (data.bibleLast) {
+        State.bibleLast = data.bibleLast;
+        Store.save('bibleLast', data.bibleLast);
+      }
+      if (data.user) {
+        State.user = data.user;
+        Store.save('user', data.user);
+      }
+
+      showToast('✅ 데이터를 불러왔습니다! 페이지를 새로고침합니다...');
+      setTimeout(() => location.reload(), 1500);
+    } catch (e) {
+      console.error('불러오기 실패:', e);
+      showToast('❌ 파일을 읽을 수 없습니다');
+    }
+    input.value = '';
+  };
+  reader.readAsText(file);
 }
 
 // ─── Boot ────────────────────────────────────────────────
