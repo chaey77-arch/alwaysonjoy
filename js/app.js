@@ -49,38 +49,6 @@ function newClientId() {
 // ─── Init ────────────────────────────────────────────────
 function init() {
   State.user = Store.load('user', null);
-
-  // 사용자가 이미 있다면 비밀번호 확인
-  if (State.user && State.user.password) {
-    const savedPassword = State.user.password;
-    let attempts = 0;
-    const maxAttempts = 3;
-
-    while (attempts < maxAttempts) {
-      const inputPassword = prompt(`안녕하세요, ${State.user.name}님!\n비밀번호를 입력해주세요:`);
-
-      if (inputPassword === null) {
-        // 취소 버튼
-        alert('비밀번호를 입력하지 않으면 앱을 사용할 수 없습니다.');
-        attempts++;
-        continue;
-      }
-
-      if (inputPassword === savedPassword) {
-        // 비밀번호 일치
-        break;
-      } else {
-        attempts++;
-        if (attempts < maxAttempts) {
-          alert(`비밀번호가 틀렸습니다. (${attempts}/${maxAttempts})`);
-        } else {
-          alert('비밀번호를 3번 틀렸습니다. 페이지를 새로고침하여 다시 시도하세요.');
-          return;  // 앱 초기화 중단
-        }
-      }
-    }
-  }
-
   State.lang = Store.load('lang', 'ko');
   State.gratitude = Store.load('gratitude', []);
   State.prayers = Store.load('prayers', []);
@@ -174,29 +142,25 @@ function switchTab(tab) {
 }
 
 // ─── Onboarding ──────────────────────────────────────────
+// 카카오로 시작하기
+async function startWithKakao() {
+  if (typeof Cloud === 'undefined' || !Cloud.signInKakao) {
+    showToast('로그인 기능을 불러오는 중입니다...');
+    return;
+  }
+
+  try {
+    await Cloud.signInKakao();
+    // 로그인 성공하면 Cloud.js가 자동으로 처리
+  } catch (e) {
+    console.error('카카오 로그인 실패:', e);
+    showToast('로그인에 실패했습니다. 다시 시도해주세요.');
+  }
+}
+
 function bindOnboard() {
-  document.getElementById('btn-start')?.addEventListener('click', () => {
-    const name = (document.getElementById('onboard-name')?.value || '').trim();
-    const password = (document.getElementById('onboard-password')?.value || '').trim();
-
-    if (!name) {
-      document.getElementById('onboard-name')?.focus();
-      showToast('이름을 입력해주세요');
-      return;
-    }
-    if (!password || password.length < 4) {
-      document.getElementById('onboard-password')?.focus();
-      showToast('비밀번호는 4자리 이상 입력해주세요');
-      return;
-    }
-
-    State.user = { name, password, joinDate: new Date().toISOString() };
-    Store.save('user', State.user);
-    showScreen('main');
-    renderAll();
-    startCompanion();
-    setTimeout(() => showCompanionBanner('morning'), 1400);
-  });
+  // 카카오 로그인 버튼은 HTML에서 onclick으로 직접 연결
+  // startWithKakao() 함수가 처리
 }
 
 // ─── Render all ──────────────────────────────────────────

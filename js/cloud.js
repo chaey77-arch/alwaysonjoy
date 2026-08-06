@@ -62,7 +62,17 @@ const Cloud = {
         this.user = session?.user || null;
         renderCloudUI();
         // 사람이 바뀌었을 때만 내려받는다 (토큰 갱신마다 받지 않게)
-        if (this.user && this.user.id !== was) this.syncAll();
+        if (this.user && this.user.id !== was) {
+          this.syncAll();
+          // 로그인 성공 시 온보딩에서 메인으로 이동
+          const onboardScreen = document.getElementById('screen-onboard');
+          if (onboardScreen && onboardScreen.classList.contains('active')) {
+            showScreen('main');
+            renderAll();
+            startCompanion();
+            setTimeout(() => showCompanionBanner('morning'), 1400);
+          }
+        }
       });
 
       renderCloudUI();
