@@ -91,8 +91,7 @@ const Cloud = {
     if (!this.ready) { showToast(t('cloudNotReady')); return; }
     try {
       const { error } = await this.sb.auth.signInWithOAuth({
-        provider: 'kakao',
-        options: { redirectTo: location.origin + location.pathname }
+        provider: 'kakao'
       });
       if (error) throw error;
     } catch (e) {
