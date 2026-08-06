@@ -161,6 +161,18 @@ async function startWithKakao() {
 function bindOnboard() {
   // 카카오 로그인 버튼은 HTML에서 onclick으로 직접 연결
   // startWithKakao() 함수가 처리
+
+  // "주님 안에서 시작하기" 버튼 - 로그인 없이 바로 시작
+  const localStartBtn = document.getElementById('btn-start');
+  if (localStartBtn) {
+    localStartBtn.onclick = () => {
+      Store.save('onboarded', true);
+      showScreen('main');
+      renderAll();
+      startCompanion();
+      setTimeout(() => showCompanionBanner('morning'), 1400);
+    };
+  }
 }
 
 // ─── Render all ──────────────────────────────────────────
