@@ -25,7 +25,7 @@
 // 대시보드가 키 이름을 바꿨다. 예전 `anon public` = 지금 `Publishable key`.
 // 두 형식(`eyJ...` JWT, `sb_publishable_...`) 다 그대로 통한다.
 const CLOUD_CONFIG = {
-  url: 'https://gjivhafzsqjirewpltku.supabase.co',
+  url: 'https://gijvhafzsqjirewpltku.supabase.co',
   anonKey: 'sb_publishable_qP51Vvf-atpEVqRopmIwbg_906-kX6T'
 };
 
