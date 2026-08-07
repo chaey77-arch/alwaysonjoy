@@ -1479,23 +1479,24 @@ function sunsetLabel(d) {
 }
 
 function setScreenMode(mode) {
+  console.log('[screenMode] 선택:', mode);
   Store.save('screenMode', mode);
-  renderScreenMode();
-  // CSS 는 문서를 다시 열 때 골라진다. 지금 화면에서 바로 바뀌게
-  // 하려면 밤 CSS 를 붙였다 뗐다 해야 하는데, 그러면 '지금 켜진 것'
-  // 과 '다시 열면 켜질 것' 이 어긋날 수 있다. 그냥 다시 그린다 —
-  // 어머니께는 '잠깐 깜빡였다' 로만 보인다.
+  console.log('[screenMode] 저장 완료');
+
   const label = mode === 'night' ? t('screenModeNight')
               : mode === 'day'   ? t('screenModeDay')
               : t('screenModeAuto');
-  showToast(t('screenModeSaved').replace('{mode}', label));
+
+  showToast(label + ' 설정 완료');
+  console.log('[screenMode] 토스트 표시:', label);
+
+  // 저장 완료 후 새로고침 (localStorage 저장 보장)
   setTimeout(() => {
-    // 고른 것을 주소에 남기지 않는다 — ?night=1 이 붙어 있으면
-    // 그게 저장한 것보다 세서, 다음에 고쳐도 안 바뀐다
+    console.log('[screenMode] 새로고침 시작');
     const u = new URL(location.href);
     u.searchParams.delete('night');
-    location.replace(u.toString());
-  }, 700);
+    location.href = u.toString();
+  }, 800);
 }
 
 function renderScreenMode() {
