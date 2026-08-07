@@ -418,7 +418,7 @@ input, textarea { font-family: inherit; }
 }
 .home-verse-text {
   font-family: 'Noto Serif KR', serif;
-  font-size: 19px; font-weight: 600;
+  font-size: 19px; font-weight: 650;
   line-height: 1.65; color: var(--ink);
   word-break: keep-all; overflow-wrap: break-word;
   margin-bottom: 10px;
@@ -1324,6 +1324,7 @@ input, textarea { font-family: inherit; }
   border: 1.5px solid rgba(0,0,0,0.06);
   border-radius: var(--r-md);
   font-size: var(--imm-fs, 17px);
+  font-weight: var(--imm-fw, 400);
   color: var(--ink); line-height: 1.65;
   outline: none; resize: none;
   transition: border-color var(--t), box-shadow var(--t);

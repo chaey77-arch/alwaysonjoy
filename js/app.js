@@ -489,9 +489,9 @@ function switchWordSub(sub) {
 // 단계 이름은 여기 적지 않는다 — fontSizeLabel() 이 말모음에서 가져온다
 // (여기 한글로 적어 두면 English 로 바꿔도 그대로 남는다).
 const BIBLE_SIZES = [
-  { v: '17px' },
-  { v: '21px' },
-  { v: '25px' }
+  { v: '17px', w: '400' },
+  { v: '21px', w: '500' },
+  { v: '25px', w: '700' }
 ];
 
 function renderBibleRead() {
@@ -788,8 +788,12 @@ function cycleBibleFontSize() {
 
 function applyBibleFontSize() {
   const idx = State.bibleFontIdx || 0;
+  const size = BIBLE_SIZES[idx];
   const body = document.getElementById('bible-body');
-  if (body) body.style.setProperty('--v', BIBLE_SIZES[idx].v);
+  if (body) {
+    body.style.setProperty('--v', size.v);
+    body.style.fontWeight = size.w;
+  }
   // 버튼에 지금 단계를 보여준다 — 글자 수로 크기를 짐작할 수 있게
   const btn = document.getElementById('bible-size-btn');
   if (btn) btn.textContent = fontSizeLabel(idx);
@@ -1019,9 +1023,9 @@ function saveGratitude() {
 // ⚠ 첫 값을 바꾸면 style.css 의 var(--imm-fs, 17px) 대체값도 같이 고친다
 //   (JS 가 --imm-fs 를 심기 전 첫 페인트에 그 값이 쓰인다)
 const IMM_SIZES = [
-  { v: '17px' },
-  { v: '20px' },
-  { v: '24px' }
+  { v: '17px', w: '400' },
+  { v: '20px', w: '500' },
+  { v: '24px', w: '700' }
 ];
 
 function cycleImmFontSize() {
@@ -1034,7 +1038,10 @@ function applyImmFontSize() {
   const size = IMM_SIZES[State.immFontIdx || 0] || IMM_SIZES[0];
   // 입력칸·질문·기록을 한꺼번에 키운다. --imm-fs 는 CSS 가 읽어 간다
   const pane = document.getElementById('tab-gratitude');
-  if (pane) pane.style.setProperty('--imm-fs', size.v);
+  if (pane) {
+    pane.style.setProperty('--imm-fs', size.v);
+    pane.style.setProperty('--imm-fw', size.w);
+  }
   const btn = document.getElementById('imm-size-btn');
   if (btn) btn.textContent = fontSizeLabel(State.immFontIdx || 0);
 }
@@ -1545,9 +1552,9 @@ function closeMemoryModal() { document.getElementById('memory-modal')?.classList
 // 담아 둔 말씀을 다시 읽는 곳이라 목록 글씨가 작으면 담아 둔 뜻이 없다.
 // 3단계는 다른 곳과 같게 맞췄다.
 const FAV_SIZES = [
-  { v: '14px' },
-  { v: '18px' },
-  { v: '22px' }
+  { v: '14px', w: '400' },
+  { v: '18px', w: '500' },
+  { v: '22px', w: '700' }
 ];
 
 function cycleFavFontSize() {
@@ -1560,7 +1567,10 @@ function applyFavFontSize() {
   const size = FAV_SIZES[State.favFontIdx || 0] || FAV_SIZES[0];
   // 목록을 감싼 곳에 심어 두면 항목이 몇 개든 한 번에 적용된다
   const list = document.getElementById('fav-verse-list');
-  if (list) list.style.setProperty('--fav-fs', size.v);
+  if (list) {
+    list.style.setProperty('--fav-fs', size.v);
+    list.style.fontWeight = size.w;
+  }
   const btn = document.getElementById('fav-size-btn');
   if (btn) btn.textContent = fontSizeLabel(State.favFontIdx || 0);
 }
@@ -2091,9 +2101,9 @@ function selectEra(idx) {
 // ─── 역사 이야기 글씨 크기 ───────────────────────────────
 // 성경읽기와 같은 3단계. 이야기 본문이 길어서 어르신이 직접 키울 수 있어야 한다.
 const STORY_SIZES = [
-  { v: '14px', lh: '1.9' },
-  { v: '18px', lh: '1.85' },
-  { v: '22px', lh: '1.8' }
+  { v: '14px', lh: '1.9', w: '400' },
+  { v: '18px', lh: '1.85', w: '500' },
+  { v: '22px', lh: '1.8', w: '700' }
 ];
 
 function cycleStoryFontSize() {
@@ -2110,9 +2120,13 @@ function applyStoryFontSize() {
   if (body) {
     body.style.fontSize = size.v;
     body.style.lineHeight = size.lh;
+    body.style.fontWeight = size.w;
   }
   const pane = document.getElementById('tab-story');
-  if (pane) pane.style.setProperty('--story-fs', size.v);
+  if (pane) {
+    pane.style.setProperty('--story-fs', size.v);
+    pane.style.setProperty('--story-fw', size.w);
+  }
 
   const btn = document.getElementById('story-size-btn');
   if (btn) btn.textContent = fontSizeLabel(idx);
