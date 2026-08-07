@@ -68,6 +68,13 @@ function init() {
     State.bibleChapter = State.bibleLast.c;
   }
   applyCharacter();
+  // 볼드 모드 복원
+  const boldMode = Store.load('boldMode', false);
+  if (boldMode) {
+    document.body.classList.add('bold-mode');
+    const btn = document.getElementById('bold-toggle-btn');
+    if (btn) btn.style.fontWeight = '900';
+  }
   // 성경 읽음 기록 복원
   const savedRead = Store.load('readEras', []);
   StoryState.readEras = new Set(savedRead);
@@ -1719,6 +1726,14 @@ function toggleLang() {
   Store.save('lang', State.lang);
   applyLangUI();
   renderAll();
+}
+
+// 볼드 모드 — 어르신들이 글씨를 더 굵게 보고 싶을 때
+function toggleBold() {
+  const isBold = document.body.classList.toggle('bold-mode');
+  Store.save('boldMode', isBold);
+  const btn = document.getElementById('bold-toggle-btn');
+  if (btn) btn.style.fontWeight = isBold ? '900' : '600';
 }
 
 // index.html 에 박힌 글을 언어에 맞게 갈아 끼운다.
