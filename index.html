@@ -196,9 +196,9 @@
         <span class="home-grid-icon">📜</span>
         <span class="home-grid-label">역사</span>
       </button>
-      <button class="home-grid-cell" onclick="openMemoryModal('people')">
-        <span class="home-grid-icon">👨‍👩‍👧</span>
-        <span class="home-grid-label">소중한 분들</span>
+      <button class="home-grid-cell home-game-cell" onclick="switchTab('album'); setTimeout(() => document.querySelector('.games-section-title').closest('.card.collapsible').classList.remove('collapsed'), 300)">
+        <span class="home-grid-icon">🎮</span>
+        <span class="home-grid-label">추억의 게임</span>
       </button>
       <button class="home-grid-cell" onclick="switchTab('album')">
         <span class="home-grid-icon">📷</span>
@@ -525,7 +525,7 @@
     <!-- 추억의 게임 — 시간도 점수도 없다. 아시는 것을 물어 맞히는 기쁨만 남긴다 -->
     <div class="card collapsible collapsed">
       <div class="card-inner">
-        <div class="card-label" data-i18n="gamesTitle">추억의 게임</div>
+        <div class="card-label games-section-title" data-i18n="gamesTitle">🎮 추억의 게임</div>
         <div class="card-body">
           <div id="game-menu"></div>
         </div>
