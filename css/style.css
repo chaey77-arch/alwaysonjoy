@@ -703,15 +703,42 @@ input, textarea { font-family: inherit; }
 .verse-hero {
   background: linear-gradient(145deg, #1A3324 0%, #2D5040 100%);
   border-radius: var(--r-xl);
-  padding: 28px 22px;
+  padding: 28px 22px 22px 22px;
   margin-bottom: 12px;
   text-align: center; position: relative;
 }
 .verse-hero-text {
   font-family: 'Noto Serif KR', serif;
   font-size: 18px; font-weight: 600;
-  color: #fff; line-height: 1.8; margin-bottom: 10px;
+  color: #fff; line-height: 1.8; margin-bottom: 12px;
   word-break: keep-all; overflow-wrap: break-word;
+}
+.verse-hero-toggle {
+  width: 32px; height: 32px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 50%;
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 12px auto;
+  transition: all var(--t);
+}
+.verse-hero-toggle:active {
+  background: rgba(255,255,255,0.22);
+  transform: scale(0.95);
+}
+.verse-hero-toggle-icon {
+  display: block;
+  transition: transform var(--t);
+}
+.verse-hero-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.verse-hero-details.open {
+  max-height: 500px;
 }
 .verse-hero-ref { font-size: 12px; color: rgba(255,255,255,0.55); margin-bottom: 18px; }
 .verse-nav { display: flex; gap: 8px; justify-content: center; }

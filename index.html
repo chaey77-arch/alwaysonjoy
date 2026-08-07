@@ -228,14 +228,19 @@
     <div class="verse-hero">
       <div class="hero-label" style="color:rgba(255,255,255,0.45);font-size:11px;letter-spacing:1.5px;margin-bottom:12px" data-i18n="today">오늘의 말씀</div>
       <div class="verse-hero-text" id="word-verse-text"></div>
-      <div class="verse-hero-ref" id="word-verse-ref"></div>
-      <div class="verse-nav">
-        <button class="verse-nav-btn" onclick="prevVerse()" data-i18n="prevVerse">← 이전</button>
-        <button class="verse-nav-btn accent" onclick="showFullscreenVerse()" data-i18n="bigView">크게 보기</button>
-        <button class="verse-nav-btn" onclick="nextVerse()" data-i18n="nextVerse">다음 →</button>
+      <button class="verse-hero-toggle" id="verse-hero-toggle" onclick="toggleVerseHeroDetails()">
+        <span class="verse-hero-toggle-icon">▼</span>
+      </button>
+      <div class="verse-hero-details" id="verse-hero-details">
+        <div class="verse-hero-ref" id="word-verse-ref"></div>
+        <div class="verse-nav">
+          <button class="verse-nav-btn" onclick="prevVerse()" data-i18n="prevVerse">← 이전</button>
+          <button class="verse-nav-btn accent" onclick="showFullscreenVerse()" data-i18n="bigView">크게 보기</button>
+          <button class="verse-nav-btn" onclick="nextVerse()" data-i18n="nextVerse">다음 →</button>
+        </div>
+        <!-- 오늘의 말씀을 앨범에 담기 -->
+        <button class="fav-hero-btn" id="fav-daily-btn" onclick="favDailyVerse()"></button>
       </div>
-      <!-- 오늘의 말씀을 앨범에 담기 -->
-      <button class="fav-hero-btn" id="fav-daily-btn" onclick="favDailyVerse()"></button>
     </div>
 
     <!-- 말씀 안의 세 갈래 — 주제별 말씀 · 성경읽기 · 설교 유튜브 -->

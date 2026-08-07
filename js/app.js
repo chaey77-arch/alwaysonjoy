@@ -188,6 +188,7 @@ function renderAll() {
   renderHeader();
   renderHome();
   renderWord();
+  restoreVerseHeroState();
   renderHymn();
   renderPrayer();
   renderGratitude();
@@ -814,6 +815,28 @@ function prevVerse() {
 function nextVerse() {
   State.currentVerseIdx = (State.currentVerseIdx + 1) % DATA.dailyVerses.length;
   renderWord(); renderHome();
+}
+
+// 오늘의 말씀 상세 정보 펼치기/접기
+function toggleVerseHeroDetails() {
+  const details = document.getElementById('verse-hero-details');
+  const icon = document.querySelector('.verse-hero-toggle-icon');
+  if (!details || !icon) return;
+
+  const isOpen = details.classList.toggle('open');
+  icon.textContent = isOpen ? '▲' : '▼';
+  Store.save('verseHeroOpen', isOpen);
+}
+
+// 초기화 시 저장된 상태 복원
+function restoreVerseHeroState() {
+  const isOpen = Store.load('verseHeroOpen', false);
+  if (isOpen) {
+    const details = document.getElementById('verse-hero-details');
+    const icon = document.querySelector('.verse-hero-toggle-icon');
+    if (details) details.classList.add('open');
+    if (icon) icon.textContent = '▲';
+  }
 }
 
 // ─── Hymn ────────────────────────────────────────────────
