@@ -337,8 +337,18 @@ input, textarea { font-family: inherit; }
   min-width: 0;
 }
 .tab-btn:active { background: var(--gold-pale); }
-.tab-icon { font-size: 20px; transition: transform 0.2s; }
-.tab-btn.active .tab-icon { transform: scale(1.1); }
+.tab-icon {
+  font-size: 20px;
+  transition: transform 0.2s;
+}
+.tab-btn.active .tab-icon {
+  transform: scale(1.1);
+  animation: tabIconBounce 2s ease-in-out infinite;
+}
+@keyframes tabIconBounce {
+  0%, 100% { transform: scale(1.1) translateY(0); }
+  50% { transform: scale(1.1) translateY(-3px); }
+}
 
 /* 메뉴 글씨 — 어른들이 "작다" 하셔서 9px → 12px 로 올렸다.
    색도 --ink4(연한 회색)에서 --ink3 으로 한 단계 진하게 했다. 크기만
@@ -397,20 +407,18 @@ input, textarea { font-family: inherit; }
 .games-section-title {
   font-size: 16px;
   font-weight: 800;
-  background: linear-gradient(135deg, #FF6B6B, #FFA500, #FFD700);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #FF8C00;
   text-transform: none;
   letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(255,140,0,0.30);
   animation: gamesTitlePulse 2s ease-in-out infinite;
 }
 .games-section-title::before {
   display: none;
 }
 @keyframes gamesTitlePulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.02); }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
 }
 
 /* ─── 2-col grid ─── */
