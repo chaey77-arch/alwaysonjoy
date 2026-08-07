@@ -76,7 +76,18 @@ const Cloud = {
       });
 
       renderCloudUI();
-      if (this.user) await this.syncAll();
+      if (this.user) {
+        await this.syncAll();
+        // 카카오에서 돌아온 직후 온보딩 화면이면 메인으로 전환
+        const onboardScreen = document.getElementById('screen-onboard');
+        if (onboardScreen && onboardScreen.classList.contains('active')) {
+          Store.save('onboarded', true);
+          showScreen('main');
+          renderAll();
+          startCompanion();
+          setTimeout(() => showCompanionBanner('morning'), 1400);
+        }
+      }
       return true;
     } catch (e) {
       // 서버가 죽었어도 앱은 계속 써야 한다
