@@ -81,6 +81,10 @@ const Cloud = {
         // 카카오에서 돌아온 직후 온보딩 화면이면 메인으로 전환
         const onboardScreen = document.getElementById('screen-onboard');
         if (onboardScreen && onboardScreen.classList.contains('active')) {
+          // 가짜 유저 만들기 (앱 로직이 State.user를 체크하므로)
+          const name = this.displayName() || '반가워요';
+          State.user = { name, joinDate: new Date().toISOString() };
+          Store.save('user', State.user);
           Store.save('onboarded', true);
           showScreen('main');
           renderAll();
