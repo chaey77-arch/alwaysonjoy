@@ -187,6 +187,16 @@ body { background: var(--bg); color: var(--ink); }
   color: var(--on-accent) !important;
 }
 
+/* 말씀 탭 서브메뉴 — 밤에도 화려하게 */
+.subtabs {
+  background: linear-gradient(135deg, rgba(94,234,212,0.15), rgba(61,220,245,0.15));
+}
+.subtab {
+  background: rgba(255,255,255,0.08);
+  color: var(--ink2);
+  border-color: rgba(139,163,199,0.25);
+}
+
 /* 게임 카드 — 밤에도 화려하게 */
 .game-card {
   background: linear-gradient(135deg,
