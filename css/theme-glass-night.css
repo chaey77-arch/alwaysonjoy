@@ -122,6 +122,24 @@ body { background: var(--bg); color: var(--ink); }
 /* 고른 메뉴 칸 — 낮에는 옅은 흰 알약이었는데 밤에는 포인트색을 옅게 */
 .tab-btn.active { background: rgba(61,220,245,0.12); }
 
+/* 홈 화면 네모 카드 — 밤에는 어두운 배경으로 */
+.home-grid-cell {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(139,163,199,0.25);
+}
+
+/* 감사 스트릭 카드도 어둡게 */
+.home-streak {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(139,163,199,0.25);
+}
+
+/* 오늘의 말씀 카드도 어둡게 */
+.home-verse-card {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(139,163,199,0.25);
+}
+
 /* 입력칸 — 밤에는 눌러 쓰는 칸이 어디인지 더 분명해야 합니다.
    낮보다 살짝 밝혀 '여기 쓰세요' 가 보이게 */
 .prayer-textarea, .imm-input, .g-input, .modal-input,
