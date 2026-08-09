@@ -230,3 +230,5 @@ body { background: var(--bg); color: var(--ink); }
   body::before { display: none; }
   body { background: var(--bg); }
 }
+
+.tts-progress-track { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.12); }

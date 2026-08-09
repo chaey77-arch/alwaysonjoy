@@ -673,7 +673,7 @@ const DATA = {
       obWelcomeVerse: '어린 아이들의 내게 오는 것을\n용납하고 금하지 말라\n하나님의 나라가 이런 자의 것이니라',
       obWelcomeRef: '마가복음 10:14 (개역한글)',
       obNameRequired: '이름을 입력해 주세요',
-      obStartBtn: '주님 안에서 시작하기 →',
+      obStartBtn: '로그인 없이 둘러보기 →',
       greetMorning: '좋은 아침이에요!', greetAfternoon: '좋은 오후예요!',
       greetEvening: '좋은 저녁이에요!', greetNight: '평안한 밤이에요',
       // 인사 문구의 \n 은 "여기서 끊어도 좋다"는 표시다. 좁은 폰에서 두 줄이
@@ -946,7 +946,7 @@ const DATA = {
       obWelcomeVerse: 'Allow the little children\nto come to me, and don’t forbid them;\nfor the Kingdom of God belongs to such as these',
       obWelcomeRef: 'Mark 10:14 (WEB)',
       obNameRequired: 'Please enter your name',
-      obStartBtn: 'Begin in the Lord →',
+      obStartBtn: 'Look around without signing in →',
       greetMorning: 'Good morning!', greetAfternoon: 'Good afternoon!',
       greetEvening: 'Good evening!', greetNight: 'Peaceful night',
       // 한국어와 같은 규칙 — \n 이 끊어도 되는 자리다.

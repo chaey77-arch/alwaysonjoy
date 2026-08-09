@@ -2171,6 +2171,47 @@ function updateStoryProgress() {
 // TTS (Web Speech API — 브라우저 내장 읽어주기)
 // ══════════════════════════════════════════════════════════
 
+// 성경 구절 표기를 읽는 말로 바꾼다 — '창세기 1:1' → '창세기 1장 1절'.
+//
+// 폰의 읽어주기는 1:1 을 시계로 본다. 어머니께는 "창세기 한 시 일 분" 으로
+// 들렸다. 구절의 : 는 시각이 아니라 장과 절을 가르는 기호다.
+// 앞 숫자에는 '장', 뒤 숫자에는 '절' 을 붙여 읽게 한다.
+//
+// 붙여 읽는 꼴도 함께 다룬다:
+//   창세기 1:1      → 창세기 1장 1절
+//   시편 121:1-2    → 시편 121장 1절에서 2절
+//   예레미야애가 3:22-23 → 예레미야애가 3장 22절에서 23절
+//   살전 5:16-18    → 살전 5장 16절에서 18절   (축약형도 그대로 통한다)
+//
+// 책 이름 목록에 기대지 않고 '숫자:숫자' 꼴만 본다. 이 앱은 온전한 이름
+// (창세기·데살로니가전서)과 축약형(살전·눅·느)을 섞어 쓰므로, 66권 이름으로
+// 맞추려 하면 절반을 놓친다 (세어 봤다: 축약형이 스물 몇 군데다).
+// 대신 앞에 낱말이 있는지 보고, 시각을 가리키는 말이면 비켜 간다.
+//
+// 영어로 읽을 때는 손대지 않는다 — 영어 읽어주기는 'Genesis 1:1' 을
+// 이미 "chapter one verse one" 에 가깝게 읽고, 'chapter'·'verse' 를
+// 한국어로 붙이면 뒤섞인다.
+
+// 이 말 뒤의 숫자:숫자 는 시각이다 — '오후 3:30' 을 "3장 30절" 로
+// 읽으면 안 된다. 지금 앱 글에는 이런 표기가 없지만, 나중에 누가
+// "저녁 6:00 예배" 같은 안내를 넣을 수 있어 미리 비켜 둔다.
+// ⚠ '시' 만 적으면 '시각' 이 빠져나간다 (시험에서 걸렸다). 낱말 전체로 적는다.
+const TIME_WORDS = /^(오전|오후|아침|저녁|밤|새벽|정오|낮|시|시각|시간|무렵|경)$/;
+
+function speakBibleRefs(text) {
+  const s = String(text == null ? '' : text);
+  if (State.lang === 'en') return s;
+  return s.replace(
+    // 앞: 책 이름의 끝 낱말(한글·영문). 그게 없으면(그냥 10:14) 시각으로 보고 둔다.
+    // 뒤: 절 하나 또는 '절-절'. 하이픈은 -(빼기) · –(엔) · ~ 를 다 받는다.
+    /([가-힣A-Za-z]+)\s*(\d+):(\d+)(?:\s*[-–~]\s*(\d+))?/g,
+    (m, before, chap, from, to) => {
+      if (TIME_WORDS.test(before)) return m;      // 시각이다 — 그대로 둔다
+      return `${before} ${chap}장 ${from}절` + (to ? `에서 ${to}절` : '');
+    }
+  );
+}
+
 function getTtsText() {
   const era = BIBLE_STORY.eras[StoryState.currentEraIdx];
   const lang = State.lang;
@@ -2204,8 +2245,15 @@ function ttsAvailable() {
 function splitForTts(text, limit) {
   const max = limit || 180;
   const out = [];
+  // 구절 표기를 읽는 말로 바꾼 뒤에 자른다.
+  // ★ 여기서 하는 까닭 — 읽어주기는 두 곳에서 시작한다(역사 이야기의
+  //   startTts, 내가 쓴 기도의 PrayerVoice.read). 두 곳이 다 이 함수를
+  //   지나가므로 한 군데만 고쳐도 둘 다 따라온다. 부르는 쪽마다 붙이면
+  //   나중에 세 번째 읽어주기가 생길 때 빠뜨린다.
+  //   자르기 전에 해야 한다 — '1:1' 이 조각 경계에 걸리면 못 알아본다.
+  const spoken = typeof speakBibleRefs === 'function' ? speakBibleRefs(text) : text;
   // 문장 끝(. ! ? 뒤 공백)에서 끊는다. 한국어는 마침표가 잘 붙어 있다.
-  const sentences = String(text).replace(/\s+/g, ' ').trim().split(/(?<=[.!?])\s+/);
+  const sentences = String(spoken).replace(/\s+/g, ' ').trim().split(/(?<=[.!?])\s+/);
 
   let buf = '';
   const push = s => { if (s && s.trim()) out.push(s.trim()); };
@@ -2372,6 +2420,30 @@ function updateTtsBtn() {
   if (!btn) return;
   btn.textContent = StoryState.ttsActive ? '⏸' : '▶';
   btn.setAttribute('aria-label', StoryState.ttsActive ? t('ttsPauseAria') : t('ttsPlayAria'));
+  const fill = document.getElementById('tts-progress-fill');
+  if (!fill) return;
+  const total = StoryState.ttsQueue && StoryState.ttsQueue.length;
+  const pct = total ? Math.round(StoryState.ttsIndex / total * 100) : 0;
+  fill.style.width = pct + '%';
+}
+
+function seekTts(e) {
+  const track = document.getElementById('tts-progress-track');
+  if (!track) return;
+  const total = StoryState.ttsQueue && StoryState.ttsQueue.length;
+  if (!total) return;
+  const pct = e.offsetX / track.offsetWidth;
+  const idx = Math.max(0, Math.min(total - 1, Math.floor(pct * total)));
+  const wasActive = StoryState.ttsActive;
+  const queue = StoryState.ttsQueue;
+  stopTts();
+  if (wasActive || StoryState.ttsPaused) {
+    StoryState.ttsQueue = queue;
+    StoryState.ttsIndex = idx;
+    StoryState.ttsActive = true;
+    updateTtsBtn();
+    speakTtsChunk();
+  }
 }
 
 // ══════════════════════════════════════════════════════════
