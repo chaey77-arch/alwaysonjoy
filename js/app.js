@@ -2198,6 +2198,25 @@ function updateStoryProgress() {
 // ⚠ '시' 만 적으면 '시각' 이 빠져나간다 (시험에서 걸렸다). 낱말 전체로 적는다.
 const TIME_WORDS = /^(오전|오후|아침|저녁|밤|새벽|정오|낮|시|시각|시간|무렵|경)$/;
 
+// 숫자를 한자어 읽기로 글자화한다 — 3 → '삼', 16 → '십육', 150 → '백오십'.
+//
+// 왜 필요한가: 한국어 읽어주기는 숫자 뒤에 '장' 이 붙으면 순우리말 수사로
+// 읽어 '3장' 을 "세 장" 이라고 낸다. 성경 장·절은 한자어(삼 장·십육 절)로
+// 읽어야 맞다. 그래서 숫자를 아예 한자어 글자로 바꿔 넘긴다 —
+// 그러면 '장'·'절' 이 뒤에 붙어도 순우리말로 돌아가지 못한다.
+// 성경은 시편 150편·119편 176절까지 있으니 세 자리까지 다룬다.
+function sinoKorean(num) {
+  const n = parseInt(num, 10);
+  if (!isFinite(n) || n <= 0 || n > 999) return String(num);
+  const d = ['', '일', '이', '삼', '사', '오', '육', '칠', '팔', '구'];
+  const h = Math.floor(n / 100), t = Math.floor((n % 100) / 10), o = n % 10;
+  let s = '';
+  if (h) s += (h > 1 ? d[h] : '') + '백';   // 백 · 이백 …
+  if (t) s += (t > 1 ? d[t] : '') + '십';   // 십 · 이십 …
+  if (o) s += d[o];
+  return s;
+}
+
 function speakBibleRefs(text) {
   const s = String(text == null ? '' : text);
   if (State.lang === 'en') return s;
@@ -2207,7 +2226,9 @@ function speakBibleRefs(text) {
     /([가-힣A-Za-z]+)\s*(\d+):(\d+)(?:\s*[-–~]\s*(\d+))?/g,
     (m, before, chap, from, to) => {
       if (TIME_WORDS.test(before)) return m;      // 시각이다 — 그대로 둔다
-      return `${before} ${chap}장 ${from}절` + (to ? `에서 ${to}절` : '');
+      // 장·절 숫자를 한자어로 풀어 "세 장" 오독을 막는다
+      return `${before} ${sinoKorean(chap)}장 ${sinoKorean(from)}절`
+        + (to ? `에서 ${sinoKorean(to)}절` : '');
     }
   );
 }
