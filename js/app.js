@@ -371,7 +371,9 @@ function renderVerseTopicContent() {
   const topic = DATA.verseTopics[State.selectedVerseTopicIdx];
   const el = document.getElementById('verse-topic-content');
   if (!el || !topic) return;
-  el.innerHTML = topic.verses.map(v => {
+
+  // 한 구절을 카드로 그린다
+  const verseCard = v => {
     const text = verseText(v), ref = verseRef(v);
     return `<div class="topic-verse">
       <div class="topic-verse-text">${escHtml(text)}</div>
@@ -380,7 +382,23 @@ function renderVerseTopicContent() {
         ${favBtnHtml(text, ref, 'topic')}
       </div>
     </div>`;
-  }).join('');
+  };
+
+  // 구약·신약으로 묶어 성경 순서대로 보여준다. part 가 없는 옛 구절은
+  // (데이터를 아직 안 나눈 주제가 있어도) 소제목 없이 그냥 이어 붙인다.
+  const ot = topic.verses.filter(v => v.part === '구약');
+  const nt = topic.verses.filter(v => v.part === '신약');
+  const rest = topic.verses.filter(v => v.part !== '구약' && v.part !== '신약');
+
+  const section = (label, verses) => verses.length
+    ? `<div class="topic-part-label">${escHtml(label)}</div>` + verses.map(verseCard).join('')
+    : '';
+
+  // 둘 다 있을 때만 소제목을 단다 — 한쪽뿐이면 굳이 나눌 이유가 없다
+  const split = ot.length && nt.length;
+  el.innerHTML = split
+    ? section(t('bibleOT'), ot) + section(t('bibleNT'), nt) + rest.map(verseCard).join('')
+    : topic.verses.map(verseCard).join('');
 }
 
 // ─── 좋아하는 말씀 ────────────────────────────────────────

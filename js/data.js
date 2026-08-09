@@ -67,6 +67,8 @@ const DATA = {
   // 영어로 바꿔도 내용까지 영어로 보여야 하므로 짝이 되는 en 을 함께 둔다.
   // 구절은 NIV, 출처는 영어 책 이름 + (NIV) — 오늘의 말씀(dailyVersesEn)과
   // 같은 표기라 두 곳을 오가도 낯설지 않다.
+  // 주제별 말씀 — 구절마다 part('구약'·'신약') 을 달아 두면 화면에서
+  // 성경 순서대로(구약 먼저) 묶어 보여준다. renderVerseTopicContent() 참고.
   verseTopics: [
     {
       key: 'peace',
@@ -74,11 +76,17 @@ const DATA = {
       labelEn: 'Peace',
       icon: '☮️',
       verses: [
-        { text: "하나님의 평강이 그리스도 예수 안에서 너희 마음과 생각을 지키시리라", ref: "빌립보서 4:7",
+        { part: '구약', text: "주께서 심지가 견고한 자를 평강하고 평강하도록 지키시리니 이는 그가 주를 신뢰함이니이다", ref: "이사야 26:3",
+          textEn: "You will keep in perfect peace those whose minds are steadfast, because they trust in you.", refEn: "Isaiah 26:3 (NIV)" },
+        { part: '구약', text: "내가 평안히 눕고 자기도 하리니 나를 안전히 거하게 하시는 이는 오직 여호와시니이다", ref: "시편 4:8",
+          textEn: "In peace I will lie down and sleep, for you alone, Lord, make me dwell in safety.", refEn: "Psalm 4:8 (NIV)" },
+        { part: '신약', text: "하나님의 평강이 그리스도 예수 안에서 너희 마음과 생각을 지키시리라", ref: "빌립보서 4:7",
           textEn: "And the peace of God, which transcends all understanding, will guard your hearts and your minds in Christ Jesus.", refEn: "Philippians 4:7 (NIV)" },
-        { text: "내가 너희에게 평안을 끼치노니 곧 나의 평안을 너희에게 주노라", ref: "요한복음 14:27",
+        { part: '신약', text: "내가 너희에게 평안을 끼치노니 곧 나의 평안을 너희에게 주노라", ref: "요한복음 14:27",
           textEn: "Peace I leave with you; my peace I give you.", refEn: "John 14:27 (NIV)" },
-        { text: "수고하고 무거운 짐 진 자들아 다 내게로 오라 내가 너희를 쉬게 하리라", ref: "마태복음 11:28",
+        { part: '신약', text: "세상에서는 너희가 환난을 당하나 담대하라 내가 세상을 이기었노라", ref: "요한복음 16:33",
+          textEn: "In this world you will have trouble. But take heart! I have overcome the world.", refEn: "John 16:33 (NIV)" },
+        { part: '신약', text: "수고하고 무거운 짐 진 자들아 다 내게로 오라 내가 너희를 쉬게 하리라", ref: "마태복음 11:28",
           textEn: "Come to me, all you who are weary and burdened, and I will give you rest.", refEn: "Matthew 11:28 (NIV)" }
       ]
     },
@@ -88,12 +96,18 @@ const DATA = {
       labelEn: 'Joy',
       icon: '😊',
       verses: [
-        { text: "항상 기뻐하라 이것이 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라", ref: "데살로니가전서 5:16,18",
-          textEn: "Rejoice always; for this is God's will for you in Christ Jesus.", refEn: "1 Thessalonians 5:16,18 (NIV)" },
-        { text: "여호와를 기뻐하는 것이 너희의 힘이니라", ref: "느헤미야 8:10",
+        { part: '구약', text: "여호와를 기뻐하는 것이 너희의 힘이니라", ref: "느헤미야 8:10",
           textEn: "The joy of the Lord is your strength.", refEn: "Nehemiah 8:10 (NIV)" },
-        { text: "여호와를 기뻐하라 그가 네 마음의 소원을 네게 이루어 주시리로다", ref: "시편 37:4",
-          textEn: "Take delight in the Lord, and he will give you the desires of your heart.", refEn: "Psalm 37:4 (NIV)" }
+        { part: '구약', text: "여호와를 기뻐하라 그가 네 마음의 소원을 네게 이루어 주시리로다", ref: "시편 37:4",
+          textEn: "Take delight in the Lord, and he will give you the desires of your heart.", refEn: "Psalm 37:4 (NIV)" },
+        { part: '구약', text: "주의 앞에는 기쁨이 충만하고 주의 오른쪽에는 영원한 즐거움이 있나이다", ref: "시편 16:11",
+          textEn: "You will fill me with joy in your presence, with eternal pleasures at your right hand.", refEn: "Psalm 16:11 (NIV)" },
+        { part: '신약', text: "항상 기뻐하라 이것이 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라", ref: "데살로니가전서 5:16,18",
+          textEn: "Rejoice always; for this is God's will for you in Christ Jesus.", refEn: "1 Thessalonians 5:16,18 (NIV)" },
+        { part: '신약', text: "내 기쁨이 너희 안에 있어 너희 기쁨을 충만하게 하려 함이라", ref: "요한복음 15:11",
+          textEn: "I have told you this so that my joy may be in you and that your joy may be complete.", refEn: "John 15:11 (NIV)" },
+        { part: '신약', text: "소망의 하나님이 모든 기쁨과 평강을 믿음 안에서 너희에게 충만하게 하사", ref: "로마서 15:13",
+          textEn: "May the God of hope fill you with all joy and peace as you trust in him.", refEn: "Romans 15:13 (NIV)" }
       ]
     },
     {
@@ -102,12 +116,18 @@ const DATA = {
       labelEn: 'Strength & Courage',
       icon: '💪',
       verses: [
-        { text: "두려워하지 말라 내가 너와 함께 함이라 놀라지 말라 나는 네 하나님이 됨이라 내가 너를 굳세게 하리라 참으로 너를 도와 주리라", ref: "이사야 41:10",
-          textEn: "So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you.", refEn: "Isaiah 41:10 (NIV)" },
-        { text: "내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라", ref: "빌립보서 4:13",
+        { part: '구약', text: "강하고 담대하라 두려워하지 말며 놀라지 말라 네가 어디로 가든지 네 하나님 여호와가 너와 함께 하느니라", ref: "여호수아 1:9",
+          textEn: "Be strong and courageous. Do not be afraid; for the Lord your God will be with you wherever you go.", refEn: "Joshua 1:9 (NIV)" },
+        { part: '구약', text: "두려워하지 말라 내가 너와 함께 함이라 놀라지 말라 나는 네 하나님이 됨이라 내가 너를 굳세게 하리라 참으로 너를 도와 주리라", ref: "이사야 41:10",
+          textEn: "So do not fear, for I am with you; I will strengthen you and help you.", refEn: "Isaiah 41:10 (NIV)" },
+        { part: '구약', text: "하나님은 우리의 피난처시요 힘이시니 환난 중에 만날 큰 도움이시라", ref: "시편 46:1",
+          textEn: "God is our refuge and strength, an ever-present help in trouble.", refEn: "Psalm 46:1 (NIV)" },
+        { part: '구약', text: "여호와는 나의 빛이요 나의 구원이시니 내가 누구를 두려워하리요", ref: "시편 27:1",
+          textEn: "The Lord is my light and my salvation—whom shall I fear?", refEn: "Psalm 27:1 (NIV)" },
+        { part: '신약', text: "내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라", ref: "빌립보서 4:13",
           textEn: "I can do all this through him who gives me strength.", refEn: "Philippians 4:13 (NIV)" },
-        { text: "여호와는 나의 힘이요 나의 구원이시니", ref: "시편 27:1",
-          textEn: "The Lord is my light and my salvation.", refEn: "Psalm 27:1 (NIV)" }
+        { part: '신약', text: "내 은혜가 네게 족하도다 이는 내 능력이 약한 데서 온전하여짐이라", ref: "고린도후서 12:9",
+          textEn: "My grace is sufficient for you, for my power is made perfect in weakness.", refEn: "2 Corinthians 12:9 (NIV)" }
       ]
     },
     {
@@ -116,12 +136,18 @@ const DATA = {
       labelEn: "God's Love",
       icon: '❤️',
       verses: [
-        { text: "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니", ref: "요한복음 3:16",
+        { part: '구약', text: "내가 영원한 사랑으로 너를 사랑하는 고로 인자함으로 너를 인도하였다 하였노라", ref: "예레미야 31:3",
+          textEn: "I have loved you with an everlasting love; I have drawn you with unfailing kindness.", refEn: "Jeremiah 31:3 (NIV)" },
+        { part: '구약', text: "여호와의 인자와 자비는 무궁하여 아침마다 새로우니 주의 성실이 크시도소이다", ref: "예레미야애가 3:22-23",
+          textEn: "Because of the Lord's great love we are not consumed; his compassions never fail. They are new every morning.", refEn: "Lamentations 3:22-23 (NIV)" },
+        { part: '구약', text: "너의 하나님 여호와가 너의 가운데에 계시니 그가 너로 말미암아 기쁨을 이기지 못하시며 너를 잠잠히 사랑하시며", ref: "스바냐 3:17",
+          textEn: "The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you.", refEn: "Zephaniah 3:17 (NIV)" },
+        { part: '신약', text: "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니", ref: "요한복음 3:16",
           textEn: "For God so loved the world that he gave his one and only Son.", refEn: "John 3:16 (NIV)" },
-        { text: "하나님은 사랑이심이라", ref: "요한일서 4:16",
-          textEn: "God is love.", refEn: "1 John 4:16 (NIV)" },
-        { text: "여호와의 인자와 자비는 무궁하여 아침마다 새로우니", ref: "예레미야애가 3:22-23",
-          textEn: "Because of the Lord's great love we are not consumed, for his compassions never fail. They are new every morning.", refEn: "Lamentations 3:22-23 (NIV)" }
+        { part: '신약', text: "사망이나 생명이나 다른 아무 피조물이라도 우리를 우리 주 그리스도 예수 안에 있는 하나님의 사랑에서 끊을 수 없으리라", ref: "로마서 8:38-39",
+          textEn: "Neither death nor life will be able to separate us from the love of God that is in Christ Jesus our Lord.", refEn: "Romans 8:38-39 (NIV)" },
+        { part: '신약', text: "하나님은 사랑이심이라 사랑 안에 거하는 자는 하나님 안에 거하고 하나님도 그의 안에 거하시느니라", ref: "요한일서 4:16",
+          textEn: "God is love. Whoever lives in love lives in God, and God in them.", refEn: "1 John 4:16 (NIV)" }
       ]
     },
     {
@@ -130,12 +156,18 @@ const DATA = {
       labelEn: "The Lord's Presence",
       icon: '✨',
       verses: [
-        { text: "내가 항상 주를 내 앞에 모심이여 그가 나의 오른쪽에 계시므로 내가 흔들리지 아니하리로다", ref: "시편 16:8",
+        { part: '구약', text: "내가 너와 함께 있어 네가 어디로 가든지 너를 지키며 너를 이끌어 이 땅으로 돌아오게 할지라", ref: "창세기 28:15",
+          textEn: "I am with you and will watch over you wherever you go.", refEn: "Genesis 28:15 (NIV)" },
+        { part: '구약', text: "너희는 강하고 담대하라 그는 너와 함께 하시며 결코 너를 떠나지 아니하시며 버리지 아니하시리라", ref: "신명기 31:6",
+          textEn: "Be strong and courageous, for the Lord your God goes with you; he will never leave you nor forsake you.", refEn: "Deuteronomy 31:6 (NIV)" },
+        { part: '구약', text: "내가 사망의 음침한 골짜기로 다닐지라도 해를 두려워하지 않을 것은 주께서 나와 함께 하심이라", ref: "시편 23:4",
+          textEn: "Even though I walk through the darkest valley, I will fear no evil, for you are with me.", refEn: "Psalm 23:4 (NIV)" },
+        { part: '구약', text: "내가 항상 주를 내 앞에 모심이여 그가 나의 오른쪽에 계시므로 내가 흔들리지 아니하리로다", ref: "시편 16:8",
           textEn: "I keep my eyes always on the Lord. With him at my right hand, I will not be shaken.", refEn: "Psalm 16:8 (NIV)" },
-        { text: "내 안에 거하라 나도 너희 안에 거하리라", ref: "요한복음 15:4",
-          textEn: "Remain in me, as I also remain in you.", refEn: "John 15:4 (NIV)" },
-        { text: "내가 너와 함께 있어 네가 어디로 가든지 너를 지키며", ref: "창세기 28:15",
-          textEn: "I am with you and will watch over you wherever you go.", refEn: "Genesis 28:15 (NIV)" }
+        { part: '신약', text: "볼지어다 내가 세상 끝날까지 너희와 항상 함께 있으리라", ref: "마태복음 28:20",
+          textEn: "And surely I am with you always, to the very end of the age.", refEn: "Matthew 28:20 (NIV)" },
+        { part: '신약', text: "내 안에 거하라 나도 너희 안에 거하리라", ref: "요한복음 15:4",
+          textEn: "Remain in me, as I also remain in you.", refEn: "John 15:4 (NIV)" }
       ]
     }
   ],
