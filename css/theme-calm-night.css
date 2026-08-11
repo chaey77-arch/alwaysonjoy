@@ -24,16 +24,16 @@
 :root {
   color-scheme: dark;   /* 스크롤바·기본 폼 컨트롤도 어둡게 */
 
-  /* ── 판 네 단계 (밝은 종이 대신 남색 판) — 한 톤 밝게 ── */
-  --pp-thin:  #202A3B;   /* 살짝 들어간 안내 상자 */
-  --pp:       #263143;   /* 카드 · 판 */
-  --pp-mid:   #2E3A4F;   /* 머리글 · 단추 */
-  --pp-solid: #2E3A4F;   /* 창 · 눌러야 하는 것 */
-  --pp-hi:    #37455D;   /* 눌렀을 때 */
+  /* ── 판 네 단계 (밝은 종이 대신 남색 판) — 배경보다 확실히 뜨게 ── */
+  --pp-thin:  #34435C;   /* 살짝 들어간 안내 상자 */
+  --pp:       #3B4A66;   /* 카드 · 판 */
+  --pp-mid:   #445475;   /* 머리글 · 단추 */
+  --pp-solid: #445475;   /* 창 · 눌러야 하는 것 */
+  --pp-hi:    #4F6083;   /* 눌렀을 때 */
 
-  /* ── 바탕 — 남색 밤하늘. 캄캄하지 않게 살짝 밝은 남색 ── */
-  --bg:  #16202F;
-  --bg2: #101825;
+  /* ── 바탕 — 남색 밤하늘. 캄캄하지 않게 밝은 남색 ── */
+  --bg:  #2A3956;
+  --bg2: #202D40;
   --wash:
     radial-gradient(900px 620px at 50% -12%, rgba(216,184,122,0.06), transparent 62%);
 
@@ -127,7 +127,7 @@ body::before {
 
 /* ── 머리글·아래메뉴 — 남색 밤하늘 ── */
 .app-header {
-  background: rgba(22,32,47,0.94);
+  background: rgba(42,57,86,0.94);
   backdrop-filter: saturate(1.05);
   -webkit-backdrop-filter: saturate(1.05);
   border-bottom: var(--paper-line);
@@ -142,7 +142,7 @@ body::before {
   box-shadow: var(--shadow-xs);
 }
 .tab-nav {
-  background: rgba(26,37,54,0.96);
+  background: rgba(36,49,73,0.96);
   backdrop-filter: saturate(1.05);
   -webkit-backdrop-filter: saturate(1.05);
   border-top: var(--paper-line);
@@ -165,14 +165,14 @@ body::before {
 .album-banner,
 .now-playing,
 .story-hero {
-  background: linear-gradient(160deg, #30405C 0%, #27344C 100%);
+  background: linear-gradient(160deg, #45597C 0%, #3B4B6A 100%);
   border: 1px solid var(--gold-line);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   box-shadow: var(--shadow-md);
   color: var(--ink);
 }
-.story-hero { background: linear-gradient(160deg, #30405C 0%, #27344C 100%) !important; }
+.story-hero { background: linear-gradient(160deg, #45597C 0%, #3B4B6A 100%) !important; }
 .hero-card::before, .verse-hero::before,
 .album-banner::before, .now-playing::before,
 .story-hero::before, .story-hero::after {
@@ -423,7 +423,7 @@ body::before {
   border-top: var(--paper-line);
 }
 .modal-overlay { background: var(--scrim); }
-.fullscreen-verse { background: linear-gradient(160deg, #22304A 0%, #16202F 100%); }
+.fullscreen-verse { background: linear-gradient(160deg, #33456A 0%, #2A3956 100%); }
 .fsv-cross { color: var(--gold) !important; }
 .fsv-text  { color: var(--ink) !important; font-family: var(--serif); }
 .fsv-ref   { color: var(--ink2) !important; }
@@ -454,7 +454,7 @@ body::before {
 .ob-title { color: var(--ink); font-family: var(--serif); font-weight: 700; }
 .ob-sub { color: var(--ink3); letter-spacing: 3px; }
 .ob-verse-card {
-  background: linear-gradient(160deg, #30405C 0%, #27344C 100%);
+  background: linear-gradient(160deg, #45597C 0%, #3B4B6A 100%);
   border: 1px solid var(--gold-line);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -640,7 +640,7 @@ body::before {
    낮 테마(theme-calm.css)는 홈 셀을 건드리지 않지만, 밤에는 흰
    유리판이 캄캄한 배경 위에서 하얗게 떠 눈을 찌르므로 반드시 덮습니다. */
 .home-verse-card {
-  background: linear-gradient(160deg, #30405C 0%, #27344C 100%);
+  background: linear-gradient(160deg, #45597C 0%, #3B4B6A 100%);
   backdrop-filter: none; -webkit-backdrop-filter: none;
   border: 1px solid var(--gold-line);
   box-shadow: var(--shadow-md);
