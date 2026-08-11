@@ -106,11 +106,17 @@ if (fn) {
   ok('밤이면 true 를 돌려준다', /return true/.test(b));
 }
 
-// ── ③ 밤 CSS 는 유리 테마에서만 ──
-ok('밤 CSS 를 유리 테마에서만 얹는다',
-   /theme\s*===\s*'glass'\s*&&\s*isNight\(\)/.test(idx));
+// ── ③ 밤 CSS 는 밤 덧칠이 있는 테마에서만 ──
+// 예전엔 유리(glass) 하나뿐이라 theme==='glass' 로 못박았지만, 이제
+// calm 도 밤 덧칠이 있어 NIGHT 맵(테마→밤 상단바색)으로 골라 얹는다.
+// 맵에 없는 테마(sky·mint·peach)엔 밤 CSS 가 안 얹혀야 글씨가 안 사라진다.
+ok('밤 CSS 를 NIGHT 맵에 있는 테마에서만 얹는다',
+   /NIGHT\[theme\]\s*&&\s*isNight\(\)/.test(idx));
+ok('밤 덧칠 파일 이름을 테마에서 만들어 붙인다',
+   /theme-'\s*\+\s*theme\s*\+\s*'-night\.css/.test(idx));
+// 밤 덧칠(동적 이름)을 낮 덧칠 document.write 뒤에서 쓰는가
 ok('밤 CSS 를 낮 CSS 뒤에 얹는다',
-   idx.indexOf("theme-glass-night.css") > idx.indexOf("'<link rel=\"stylesheet\" href=\"css/theme-'"));
+   idx.indexOf("-night.css") > idx.indexOf("'<link rel=\"stylesheet\" href=\"css/theme-'"));
 ok('밤에는 주소창 색도 어둡게 바꾼다', /#0B1220/.test(idx));
 
 // ── ⑤ 밤 CSS 가 글씨와 유리판을 다 뒤집는가 ──

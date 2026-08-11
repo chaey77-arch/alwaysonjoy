@@ -28,16 +28,17 @@
       var theme;
       if (q === 'none') { theme = ''; }
       else if (/^(mint|sky|peach|glass|calm)$/.test(q)) { theme = q; }
-      // 유리(F) 가 이제 평소 화면입니다 — 어머니가 시안 일곱 개 중 F 를 고르셨습니다.
-      // 예전 시간대 테마(아침 sky · 점심 mint · 저녁 peach)는 지우지 않았습니다.
-      // ?theme=sky 처럼 붙이면 그대로 나오므로 견줘 볼 수 있습니다.
+      // 조용한 프리미엄(calm) 이 이제 평소 화면입니다 — 크림 종이 위 깊은
+      // 남색. 예전 화면들(유리 glass, 아침 sky · 점심 mint · 저녁 peach)은
+      // 지우지 않았습니다. ?theme=glass 처럼 붙이면 그대로 나오므로 견줘
+      // 볼 수 있습니다.
       //
-      // 유리는 시각에 따라 색을 바꾸지 않습니다. 밝기는 아래 isNight() 가
+      // calm 은 시각에 따라 색을 바꾸지 않습니다. 밝기는 아래 isNight() 가
       // 해 지는 시각을 보고 밤 덧칠을 얹어서 처리합니다.
       // ⚠ 여기에 밤 덧칠 파일 이름을 적지 마세요 — t27 이 '밤 덧칠이 낮
       //   덧칠보다 뒤에 얹히는가' 를 소스에 나오는 순서로 재기 때문에,
       //   주석에 먼저 적으면 그 시험이 헛돌게 됩니다. (실제로 그랬습니다)
-      else { theme = 'glass'; }
+      else { theme = 'calm'; }
       if (theme) {
         document.write('<link rel="stylesheet" href="css/theme-' + theme + '.css"/>');
         var bar = { sky: '#F8FBFF', mint: '#F7FBF9', peach: '#FFFAF7',
