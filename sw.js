@@ -1,7 +1,7 @@
 // 캐시 이름 — 앱 파일을 수정하면 이 버전을 올린다
 // (이름이 바뀌면 activate 에서 예전 캐시를 지운다. localStorage 의
 //  'ajoy_' 접두사는 건드리지 않는다 — 그건 사용자 기록이라 바꾸면 다 날아간다)
-const CACHE_NAME = 'alwaysjoy-v26';
+const CACHE_NAME = 'alwaysjoy-v27';
 const ASSETS = [
   './',
   './index.html',
@@ -14,8 +14,9 @@ const ASSETS = [
   // 예전 화면이 나온다. 위의 세 시간대 테마는 ?theme=sky 로 견줘 볼 때 쓴다.
   './css/theme-glass.css',
   './css/theme-glass-night.css',
-  // 조용한 프리미엄(G) — ?theme=calm 미리보기용
+  // 조용한 프리미엄(G) — ?theme=calm 미리보기용 (밤 덧칠 포함)
   './css/theme-calm.css',
+  './css/theme-calm-night.css',
   './js/data.js',
   './js/bible-story.js',
   './js/bible-read.js',

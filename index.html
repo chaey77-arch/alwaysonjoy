@@ -75,13 +75,16 @@
         return now >= SUNSET[d.getMonth()] || now < SUNRISE[d.getMonth()];
       }
 
-      if (theme === 'glass' && isNight()) {
-        document.write('<link rel="stylesheet" href="css/theme-glass-night.css"/>');
+      // 밤 덧칠을 가진 테마들 — 낮 덧칠 뒤에 밤 덧칠을 한 겹 더 얹습니다.
+      // (bar = 밤일 때의 상단바 색 = 첫 페인트 바탕색)
+      var NIGHT = { glass: '#0B1220', calm: '#0E1522' };
+      if (NIGHT[theme] && isNight()) {
+        document.write('<link rel="stylesheet" href="css/theme-' + theme + '-night.css"/>');
         var m2 = document.querySelector('meta[name="theme-color"]');
-        if (m2) m2.setAttribute('content', '#0B1220');
+        if (m2) m2.setAttribute('content', NIGHT[theme]);
         // 첫 페인트가 흰색으로 한 번 번쩍이는 것을 막습니다 — CSS 를
         // 다 읽기 전에 <html> 이 흰 바탕으로 그려지기 때문입니다
-        document.documentElement.style.background = '#0B1220';
+        document.documentElement.style.background = NIGHT[theme];
       }
     })();
   </script>
