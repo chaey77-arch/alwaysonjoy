@@ -1014,7 +1014,7 @@ function renderGratitude() {
   const history = document.getElementById('gratitude-history');
   if (!history) return;
   if (!State.gratitude.length) {
-    history.innerHTML = `<div class="empty"><div class="empty-icon">💛</div><div class="empty-text">${t('gratitudeEmpty')}</div></div>`;
+    history.innerHTML = `<div class="empty"><div class="empty-icon">🧡</div><div class="empty-text">${t('gratitudeEmpty')}</div></div>`;
   } else {
     history.innerHTML = State.gratitude.slice(-14).reverse().map(g =>
       `<div class="g-history-day">

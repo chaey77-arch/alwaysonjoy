@@ -20,7 +20,7 @@ const DATA = {
       color: '#A5D6A7'
     },
     {
-      icon: '💛',
+      icon: '🧡',
       cmd: '범사에 감사하라',
       ref: '살전 5:18',
       sub: '작은 것에도 감사할 수 있습니다',
@@ -531,7 +531,7 @@ const DATA = {
   immanuelSteps: [
     {
       key: 'thanks',
-      icon: '💛',
+      icon: '🧡',
       title: '감사로 시작해요',
       ask: '오늘 감사한 일 하나를 주님께 말씀드려 보세요',
       hint: '예) 주님, 오늘 아침 햇살이 참 따뜻했습니다. 감사합니다.',
@@ -604,8 +604,8 @@ const DATA = {
       textEn: "😊 {name}, the Lord is beside you even now.\n\"I am with you\" (Isaiah 41:10)", actionEn: 'Read the Word', actionKey: 'word' },
     { trigger: 'morning', text: "🌅 좋은 아침이에요, {name}님!\n오늘도 주님 안에서 시작해요 🙏", action: '아침 기도',
       textEn: "🌅 Good morning, {name}!\nLet's begin this day in the Lord 🙏", actionEn: 'Morning prayer', actionKey: 'prayer' },
-    { trigger: 'evening', text: "🌙 {name}님, 오늘 하루도 수고하셨어요.\n감사한 일 하나 떠올려볼까요? 💛", action: '감사 쓰기',
-      textEn: "🌙 {name}, you have done well today.\nShall we recall one thing to be thankful for? 💛", actionEn: 'Write gratitude', actionKey: 'gratitude' },
+    { trigger: 'evening', text: "🌙 {name}님, 오늘 하루도 수고하셨어요.\n감사한 일 하나 떠올려볼까요? 🧡", action: '감사 쓰기',
+      textEn: "🌙 {name}, you have done well today.\nShall we recall one thing to be thankful for? 🧡", actionEn: 'Write gratitude', actionKey: 'gratitude' },
     { trigger: 'lonely', text: "✨ {name}님, 외로우신가요?\n주님은 항상 함께하십니다.\n찬양 한 곡 들어볼까요?", action: '찬양 듣기',
       textEn: "✨ {name}, are you feeling lonely?\nThe Lord is always with you.\nShall we listen to a hymn?", actionEn: 'Listen to a hymn', actionKey: 'hymn' },
     { trigger: 'depression', text: "💚 {name}님, 마음이 무거우실 수 있어요.\n괜찮아요. 주님께 말씀드려봐요.", action: '기도하기',
@@ -678,7 +678,7 @@ const DATA = {
       prayerPlaceholder: '주님께 드리고 싶은 말씀을 자유롭게 적어보세요...',
       prayerSave: '🙏 저장하기',
       gratitudeToday: '오늘 감사한 일',
-      gratitudeSave: '💛 감사 저장하기',
+      gratitudeSave: '🧡 감사 저장하기',
       gratitudeHistory: '감사 기록', noGratitude: '감사한 일을 적어보세요',
       gPlaceholder1: '오늘 감사한 일...', gPlaceholder2: '또 하나...', gPlaceholder3: '마지막으로...',
       gNote: '작은 것이라도 괜찮아요. 하나씩 적어보세요 🌿',
@@ -787,8 +787,8 @@ const DATA = {
       gratitudeStreak: '일째 감사 중 🔥',
       gratitudeStreakNone: '오늘 첫 감사를 써볼까요?',
       gratitudeEmpty: '감사한 일을 적어보세요<br>범사에 감사하라 · 살전 5:18',
-      gratitudeSaveEmpty: '감사한 일을 하나라도 써주세요 💛',
-      gratitudeSaved2: '감사 일기를 저장했습니다 💛',
+      gratitudeSaveEmpty: '감사한 일을 하나라도 써주세요 🧡',
+      gratitudeSaved2: '감사 일기를 저장했습니다 🧡',
       streakSub: '범사에 감사하라 · 살전 5:18',
 
       // 임마누엘 일기
@@ -961,7 +961,7 @@ const DATA = {
       prayerPlaceholder: 'Share anything with the Lord...',
       prayerSave: '🙏 Save Prayer',
       gratitudeToday: "Today's Gratitude",
-      gratitudeSave: '💛 Save Gratitude',
+      gratitudeSave: '🧡 Save Gratitude',
       gratitudeHistory: 'Gratitude History', noGratitude: 'Write what you are grateful for',
       gPlaceholder1: 'Something I am grateful for...', gPlaceholder2: 'One more thing...', gPlaceholder3: 'And one more...',
       gNote: 'Even small things count. Take it one by one 🌿',
@@ -1040,8 +1040,8 @@ const DATA = {
       gratitudeStreak: '-day gratitude streak 🔥',
       gratitudeStreakNone: 'Shall we write your first gratitude today?',
       gratitudeEmpty: 'Write what you are grateful for<br>Give thanks in all circumstances · 1 Thess 5:18',
-      gratitudeSaveEmpty: 'Please write at least one thing 💛',
-      gratitudeSaved2: 'Your gratitude diary has been saved 💛',
+      gratitudeSaveEmpty: 'Please write at least one thing 🧡',
+      gratitudeSaved2: 'Your gratitude diary has been saved 🧡',
       streakSub: 'Give thanks in all things · 1 Thess 5:18',
 
       immTitle: 'Immanuel Journal', immHistTitle: 'Immanuel Journal History',
