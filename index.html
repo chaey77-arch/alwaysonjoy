@@ -27,7 +27,7 @@
       var q = new URLSearchParams(location.search).get('theme') || '';
       var theme;
       if (q === 'none') { theme = ''; }
-      else if (/^(mint|sky|peach|glass)$/.test(q)) { theme = q; }
+      else if (/^(mint|sky|peach|glass|calm)$/.test(q)) { theme = q; }
       // 유리(F) 가 이제 평소 화면입니다 — 어머니가 시안 일곱 개 중 F 를 고르셨습니다.
       // 예전 시간대 테마(아침 sky · 점심 mint · 저녁 peach)는 지우지 않았습니다.
       // ?theme=sky 처럼 붙이면 그대로 나오므로 견줘 볼 수 있습니다.
@@ -41,7 +41,7 @@
       if (theme) {
         document.write('<link rel="stylesheet" href="css/theme-' + theme + '.css"/>');
         var bar = { sky: '#F8FBFF', mint: '#F7FBF9', peach: '#FFFAF7',
-                    glass: '#EEF4FC' }[theme];
+                    glass: '#EEF4FC', calm: '#F3ECE0' }[theme];
         var meta = document.querySelector('meta[name="theme-color"]');
         if (meta && bar) meta.setAttribute('content', bar);
       }

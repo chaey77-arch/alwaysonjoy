@@ -1,0 +1,648 @@
+/* ═══════════════════════════════════════════════════════════════
+   시안 G — 조용한 프리미엄 (Calm) · 크림 종이 + 깊은 남색
+
+   "동네 좋은 카페의 아침 같은, 손님을 대접하는 앱."
+   어른이 '내가 뒤쳐진 게 아니라 멋진 앱을 쓴다' 고 느끼게 하는 것이 목표.
+
+   ⚠ 이 파일은 style.css **뒤에** 얹히는 덧칠입니다. `?theme=calm` 으로만
+     켜집니다. 기존 화면(유리 테마)은 한 글자도 건드리지 않습니다.
+
+   ── 디자인 언어 ──
+   ① 색은 셋 — 크림 종이 · 깊은 남색 · 먹색. 그라디언트를 쓰지 않습니다
+      (단색이 더 프리미엄으로 읽힙니다). 강조는 색을 늘리지 않고
+      '먹색의 농담(濃淡)' 과 '여백' 으로 만듭니다.
+   ② 명조체(Noto Serif KR)로 말을 겁니다 — 말씀·제목·인사. 성경책 표지의
+      품격. 본문·단추는 Pretendard 그대로(가독성).
+   ③ 종이 질감 — 유리(반투명)가 아니라 살짝 도톰한 흰 종이. hairline
+      테두리 한 줄, 그림자는 거의 안 보이게. 모서리는 작게(각을 살림).
+   ④ 여백을 넉넉히 — 요소가 숨 쉴 공간이 프리미엄의 핵심입니다.
+
+   대비·짚는 넓이(44px)는 유리 테마와 같은 기준으로 지켰습니다.
+═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── 종이 네 단계 (유리 대신 불투명 종이) ── */
+  --pp-thin:  #FBF7EF;   /* 안내 상자처럼 살짝 들어간 곳 */
+  --pp:       #FFFDF9;   /* 카드 · 종이판 */
+  --pp-mid:   #FFFFFF;   /* 머리글 · 단추 */
+  --pp-solid: #FFFFFF;   /* 창 · 눌러야 하는 것 */
+  --pp-hi:    #FFFFFF;   /* 눌렀을 때 */
+
+  /* ── 바탕 — 따뜻한 크림 종이. 번짐 없이 차분하게 ── */
+  --bg:  #F3ECE0;
+  --bg2: #EBE2D2;
+  /* 유리 테마의 파스텔 번짐 대신, 아주 옅은 종이 결 하나만.
+     거의 안 보이지만 완전한 단색보다 '종이' 느낌을 줍니다 */
+  --wash:
+    radial-gradient(900px 600px at 50% -10%, rgba(255,255,255,0.55), transparent 60%);
+
+  /* style.css 가 쓰는 이름들을 종이로 맞춥니다 */
+  --surface:  var(--pp);
+  --surface2: var(--pp-mid);
+  --surface3: var(--pp-thin);
+
+  /* ── 포인트 한 색 — 깊은 남색. 그라디언트 없이 단색 ──
+     단추 위 흰 글씨가 4.5:1 을 넉넉히 넘습니다 (#2C3E5C 위 #fff ≈ 9:1). */
+  --gold:       #2C3E5C;
+  --gold-bright:#2C3E5C;   /* 그라디언트를 없애려 같은 값 — 두 색을 섞어도 단색 */
+  --gold-pale:  #ECEFF4;
+  --gold-line:  rgba(44,62,92,0.16);
+  --on-accent:  #FFFFFF;
+
+  /* 보조색 — 남색 계열의 옅은 청록 하나. 색을 늘리지 않습니다 */
+  --green:      #3A5A54;
+  --green-pale: #EDF2F0;
+  --green-line: rgba(58,90,84,0.18);
+
+  /* ── 글씨 — 진한 먹색. 크림 종이 위에서 또렷하게 ── */
+  --ink:  #241E16;   /* 제목·본문 */
+  --ink2: #4A4236;   /* 보조 (4.5:1 넘김) */
+  --ink3: #736A59;   /* 작은 글씨도 기준을 넘도록 */
+  --ink4: #6E6555;   /* 읽어야 하는 옅은 글씨 (번호·연대) */
+
+  --red: #B04A3F;
+
+  --track: rgba(36,30,22,0.10);
+  --scrim: rgba(36,30,22,0.34);
+  --deco:  rgba(44,62,92,0.08);
+
+  /* ── 모서리를 작게 — 각을 살려야 성숙해 보입니다 ── */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 18px;
+
+  /* ── 그림자는 거의 안 보이게. 위계는 hairline 테두리로 ── */
+  --shadow-xs: 0 1px 2px rgba(36,30,22,0.04);
+  --shadow-sm: 0 2px 8px rgba(36,30,22,0.05);
+  --shadow-md: 0 4px 16px rgba(36,30,22,0.07);
+  --shadow-gold: 0 3px 10px rgba(44,62,92,0.18);
+
+  --paper-line: 1px solid var(--gold-line);
+
+  /* 명조체 — 말씀·제목에 씁니다. style.css 가 이미 Noto Serif KR 을
+     불러 두었으므로 여기서는 이름만 참조합니다 */
+  --serif: 'Noto Serif KR', 'Apple SD Gothic Neo', serif;
+}
+
+/* ── 바탕 — 크림 종이. 옅은 결 하나만 fixed 로 ── */
+body {
+  background: var(--bg);
+  color: var(--ink);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: var(--wash);
+}
+
+/* ═══ 종이판 공통 — 유리를 종이로 ═══
+   반투명·blur 를 걷어내고 불투명 흰 종이 + hairline 테두리로. */
+.card,
+.greet-card,
+.quick-card,
+.album-card,
+.prayer-type-card,
+.modern-card,
+.era-chip,
+.game-choice,
+.hymn-row,
+.video-item,
+.modal-sheet,
+.game-sheet,
+.bible-resume-btn,
+.g-history-day,
+.imm-hist-day,
+.prayer-saved-row,
+.modal-saved-item,
+.read-group,
+.imm-step,
+.story-verse-item,
+.timeline-nav,
+.localonly-body {
+  background: var(--pp);
+  border: var(--paper-line);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-sm);
+}
+
+/* 카드 안쪽 여백을 넉넉히 — 프리미엄의 핵심은 여백입니다.
+   (style.css 의 .card-inner 패딩을 키웁니다) */
+.card > .card-inner { padding: 22px 20px; }
+
+/* ── 머리글·아래메뉴 — 불투명 크림. blur 제거 ── */
+.app-header {
+  background: rgba(243,236,224,0.94);
+  backdrop-filter: saturate(1.05);
+  -webkit-backdrop-filter: saturate(1.05);
+  border-bottom: var(--paper-line);
+}
+.hdr-name { color: var(--ink); font-family: var(--serif); font-weight: 600; }
+.hdr-date { color: var(--ink2); }
+.hdr-bell {
+  min-width: 44px; min-height: 44px;
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  border-radius: 50%;
+  box-shadow: var(--shadow-xs);
+}
+.tab-nav {
+  background: rgba(255,253,249,0.96);
+  backdrop-filter: saturate(1.05);
+  -webkit-backdrop-filter: saturate(1.05);
+  border-top: var(--paper-line);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -2px 12px rgba(36,30,22,0.05);
+}
+.tab-label { color: var(--ink2); }
+.tab-btn.active .tab-label { color: var(--gold); font-weight: 700; }
+.tab-btn.active {
+  background: var(--gold-pale);
+  border-radius: 12px;
+}
+
+/* ═══ 히어로·말씀 카드 — 책 표지 같은 남색 단색 ═══
+   이 앱의 얼굴입니다. 유리판이 아니라 '깊은 남색 표지에 흰 글씨' 로
+   두어 성경책·저널의 품격을 냅니다. 여기만 남색으로 채우고 나머지는
+   크림 종이라, 시선이 말씀에 먼저 갑니다. */
+.hero-card,
+.verse-hero,
+.album-banner,
+.now-playing,
+.story-hero {
+  background: var(--gold);
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-md);
+  color: var(--on-accent);
+}
+.story-hero { background: var(--gold) !important; }
+.hero-card::before, .verse-hero::before,
+.album-banner::before, .now-playing::before,
+.story-hero::before, .story-hero::after {
+  color: rgba(255,255,255,0.10) !important;
+  background: none !important;
+}
+/* 남색 표지 위 글씨 — 라벨은 옅은 금빛, 말씀은 흰색 명조체 */
+.hero-label     { color: #D8B87A !important; letter-spacing: 2px; font-weight: 600; }
+.hero-verse     { color: var(--on-accent) !important; font-family: var(--serif); font-weight: 500; }
+.hero-ref       { color: rgba(255,255,255,0.78) !important; }
+.verse-hero-text{ color: var(--on-accent) !important; font-family: var(--serif); font-weight: 500; }
+.verse-hero-ref { color: rgba(255,255,255,0.78) !important; }
+.album-banner-verse { color: var(--on-accent) !important; font-family: var(--serif); }
+.album-banner-ref   { color: rgba(255,255,255,0.78) !important; }
+.np-label  { color: #D8B87A !important; letter-spacing: 2px; }
+.np-title  { color: var(--on-accent) !important; font-family: var(--serif); }
+.np-artist { color: rgba(255,255,255,0.78) !important; }
+.np-note   { color: rgba(255,255,255,0.78) !important; }
+.np-lyrics { background: rgba(255,255,255,0.10) !important; }
+.np-lyrics-text { color: var(--on-accent) !important; }
+.story-hero-period  { color: #D8B87A !important; }
+.story-hero-era     { color: var(--on-accent) !important; font-family: var(--serif); }
+.story-hero-books   { color: rgba(255,255,255,0.78) !important; }
+.story-hero-tagline { color: rgba(255,255,255,0.82) !important; }
+
+/* 남색 표지 위 단추 — 반투명 흰 알약 */
+.hero-btn, .verse-nav-btn {
+  min-height: 44px; padding: 0 18px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.28);
+  color: var(--on-accent) !important;
+  font-size: 14px;
+  border-radius: var(--r-md);
+  box-shadow: none;
+}
+.hero-btn:active, .verse-nav-btn:active { background: rgba(255,255,255,0.24); }
+.verse-nav-btn.accent,
+.hero-btn.primary {
+  background: #FFFFFF;
+  color: var(--gold) !important; border-color: transparent;
+  font-weight: 700;
+  box-shadow: var(--shadow-xs);
+}
+.fav-hero-btn {
+  min-height: 44px; padding: 0 20px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.28);
+  color: var(--on-accent) !important;
+  font-size: 13px;
+  border-radius: var(--r-md);
+  box-shadow: none;
+}
+.fav-hero-btn.on { color: #FFC9C0 !important; }
+
+/* ═══ 단추 — 남색 단색, 그라디언트 없음 ═══ */
+.btn-primary {
+  min-height: 52px;
+  background: var(--gold);
+  color: var(--on-accent); font-size: 16px;
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-gold);
+}
+.btn-secondary {
+  min-height: 52px;
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  color: var(--ink);
+  font-size: 15px;
+  border-radius: var(--r-lg);
+}
+.ob-start-btn {
+  min-height: 56px;
+  background: var(--gold);
+  color: var(--on-accent);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-gold);
+}
+
+/* ── 작은 알약 단추들 — 다 44px 이상 ── */
+.chip, .subtab, .bible-size-btn, .tts-speed-btn,
+.cloud-btn, .cb-btn, .fav-hero-btn, .story-size-row button {
+  min-height: 44px;
+}
+.chip {
+  padding: 0 16px;
+  display: inline-flex; align-items: center;
+  background: var(--pp);
+  border: var(--paper-line);
+  color: var(--ink2); font-size: 13px;
+  border-radius: var(--r-md);
+  box-shadow: none;
+}
+.chip.active {
+  background: var(--gold);
+  color: var(--on-accent); border-color: transparent;
+  box-shadow: var(--shadow-xs);
+}
+.subtabs {
+  background: var(--pp-thin);
+  border: var(--paper-line);
+  border-radius: 50px; padding: 4px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.subtab { color: var(--ink2); }
+.subtab.active {
+  background: var(--gold);
+  color: var(--on-accent);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ── 성경 넘기기 단추 ── */
+.bible-nav-btn {
+  min-height: 52px;
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  color: var(--ink);
+  font-size: 15px;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-xs);
+}
+.bible-nav-btn:active { background: var(--gold-pale); }
+.bible-top-btn {
+  min-height: 44px;
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  color: var(--ink2);
+}
+
+/* ── 말로 쓰기·읽어주기 ── */
+.mic-btn {
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  color: var(--ink);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-xs);
+}
+.mic-btn.on {
+  background: var(--gold);
+  color: var(--on-accent); border-color: transparent;
+  box-shadow: var(--shadow-xs);
+}
+.mic-btn.on .mic-btn-label { color: var(--on-accent); }
+.tts-btn {
+  width: 44px; height: 44px;
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  color: var(--ink);
+  box-shadow: var(--shadow-xs);
+}
+.tts-btn.play {
+  background: var(--gold);
+  color: var(--on-accent); border-color: transparent;
+}
+.tts-btn.stop { background: var(--pp-solid); color: var(--red); }
+.np-ctrl {
+  min-width: 48px; min-height: 48px;
+  background: rgba(255,255,255,0.14) !important;
+  border: 1px solid rgba(255,255,255,0.28);
+  color: var(--on-accent) !important;
+  box-shadow: none;
+}
+.np-play {
+  width: 60px; height: 60px;
+  background: #FFFFFF !important;
+  color: var(--gold) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── 입력칸 ── */
+.prayer-textarea, .imm-input, .g-input, .modal-input,
+.ob-input, .bible-select {
+  background: var(--pp);
+  border: var(--paper-line);
+  color: var(--ink);
+  border-radius: var(--r-md);
+  box-shadow: inset 0 1px 2px rgba(36,30,22,0.03);
+}
+.prayer-textarea:focus, .imm-input:focus, .g-input:focus,
+.modal-input:focus, .ob-input:focus {
+  background: var(--pp-hi);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(44,62,92,0.12);
+}
+.prayer-textarea::placeholder, .imm-input::placeholder,
+.g-input::placeholder, .modal-input::placeholder,
+.ob-input::placeholder { color: var(--ink4); }
+
+/* ── 감사 스트릭 · 알약 ── */
+.streak-card {
+  background: var(--pp);
+  border: var(--paper-line);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-sm);
+}
+.streak-big  { color: var(--gold) !important; font-family: var(--serif); }
+.streak-main { color: var(--ink) !important; }
+.streak-sub  { color: var(--ink2) !important; }
+.streak-pill {
+  background: var(--pp);
+  border: var(--paper-line);
+  min-height: 44px;
+}
+.streak-num  { color: var(--gold); }
+.streak-text { color: var(--ink2); }
+
+/* ── 게임 ── */
+.game-choice {
+  min-height: 62px;
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  color: var(--ink);
+  border-radius: var(--r-md);
+}
+.game-choice.right {
+  background: var(--green);
+  color: var(--on-accent) !important; border-color: transparent;
+  box-shadow: var(--shadow-xs);
+}
+.game-dot { background: var(--track); }
+.game-dot.done { background: var(--gold); }
+.game-dot.now  { background: var(--gold); }
+.pair-card { border-radius: var(--r-md); }
+.pair-back {
+  background: var(--pp);
+  border: var(--paper-line);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.pair-face {
+  background: var(--gold);
+  border: none;
+}
+.game-end-verse {
+  background: var(--pp-thin);
+  border: var(--paper-line);
+}
+
+/* ── 창(모달)·전체화면 ── */
+.modal-sheet {
+  background: var(--pp-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-radius: 20px 20px 0 0;
+  border-top: var(--paper-line);
+}
+.modal-overlay { background: var(--scrim); }
+.fullscreen-verse { background: var(--gold); }
+.fsv-cross { color: #D8B87A !important; }
+.fsv-text  { color: var(--on-accent) !important; font-family: var(--serif); }
+.fsv-ref   { color: rgba(255,255,255,0.78) !important; }
+.fsv-close {
+  min-width: 48px; min-height: 48px;
+  background: rgba(255,255,255,0.16) !important;
+  border: 1px solid rgba(255,255,255,0.28);
+  color: var(--on-accent) !important;
+}
+
+/* ── 진도 막대 · 타임라인 — 단색 남색 ── */
+.progress-bar-wrap, .bible-progress-bar, .read-row-bar {
+  background: var(--track);
+}
+.progress-bar-fill, .bible-progress-bar > span, .read-row-bar > span {
+  background: var(--gold);
+}
+.timeline-dot { background: var(--pp-mid); border: var(--paper-line); }
+.timeline-item.active .timeline-dot {
+  background: var(--gold);
+  color: var(--on-accent);
+}
+.timeline-line { background: var(--track); }
+
+/* ── 온보딩 — 첫인상 ── */
+#screen-onboard { background: var(--wash), var(--bg); }
+#screen-onboard::before, #screen-onboard::after { background: none; }
+.ob-title { color: var(--ink); font-family: var(--serif); font-weight: 700; }
+.ob-sub { color: var(--ink3); letter-spacing: 3px; }
+.ob-verse-card {
+  background: var(--gold);
+  border: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: var(--shadow-md);
+}
+.ob-verse-line { color: var(--on-accent); font-family: var(--serif); font-weight: 500; }
+.ob-verse-ref { color: rgba(255,255,255,0.78); }
+.ob-label { color: var(--ink2); }
+.ob-welcome { border-top: 1px solid var(--gold-line); }
+.ob-welcome-verse { color: var(--ink2); font-family: var(--serif); }
+.ob-welcome-ref   { color: var(--ink2); }
+#ob-lang-btn, #lang-toggle-btn {
+  min-height: 44px !important;
+  padding: 0 16px !important;
+  display: inline-flex !important; align-items: center !important;
+  background: var(--pp-solid) !important;
+  border: var(--paper-line) !important;
+  border-radius: 22px !important;
+  font-size: 13px !important;
+  color: var(--ink) !important;
+  box-shadow: var(--shadow-xs);
+}
+
+/* ── 화면 밝기 고르는 칸 ── */
+.screenmode-row { display: flex; gap: 8px; }
+.screenmode-btn {
+  flex: 1; min-height: 56px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  border-radius: var(--r-md);
+  background: var(--pp);
+  border: var(--paper-line);
+  color: var(--ink2);
+  font-size: 14px; font-weight: 600;
+  box-shadow: var(--shadow-xs);
+}
+.screenmode-btn .sm-sub { font-size: 11px; font-weight: 400; color: var(--ink3); }
+.screenmode-btn.on {
+  background: var(--gold);
+  border-color: transparent;
+  color: var(--on-accent);
+  box-shadow: var(--shadow-xs);
+}
+.screenmode-btn.on .sm-sub { color: var(--on-accent); opacity: 0.85; }
+
+/* ── 나머지 잔손질 ── */
+.toast {
+  background: rgba(36,30,22,0.94);
+  color: #fff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.companion-banner {
+  background: var(--pp-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: var(--paper-line);
+}
+.cb-btn { min-height: 44px; }
+.cb-btn.primary {
+  background: var(--gold);
+  color: var(--on-accent);
+}
+.cloud-btn {
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  color: var(--ink);
+}
+.cloud-btn.kakao { background: #FEE500; color: #191600; border-color: transparent; }
+.prayer-guide-box, .imm-verse, .imm-intro, .bible-starter,
+.game-note, .cloud-note, .about-list, .empty {
+  background: var(--pp-thin);
+  border: var(--paper-line);
+}
+.bible-verse-num { color: var(--gold); }
+
+/* ── 시대 고르는 알약 (역사 탭) ── */
+.era-chip.active, .era-chip:active {
+  background: var(--gold);
+  border-color: transparent;
+}
+.era-chip-label { color: var(--ink2); }
+.era-chip-period { color: var(--ink3); }
+.era-chip.active .era-chip-label  { color: var(--on-accent); }
+.era-chip.active .era-chip-period { color: var(--on-accent); opacity: 0.85; }
+
+.timeline-item.active, .timeline-item:active { background: var(--pp-mid); }
+.timeline-books  { color: var(--ink3); }
+.timeline-period { color: var(--ink3); }
+.timeline-item.done .timeline-dot { background: var(--green); color: var(--on-accent); }
+.g-badge, .bible-retry, .g-check, .imm-step-num {
+  background: var(--gold);
+  color: var(--on-accent);
+}
+.bible-retry { min-height: 44px; }
+.tts-speed-btn { background: var(--pp); color: var(--ink2); }
+.tts-speed-btn.active {
+  background: var(--gold);
+  color: var(--on-accent);
+}
+.story-verse-en { color: var(--ink3); }
+.tts-reading { background: var(--gold-pale); color: var(--ink); }
+.fav-btn.on, .fav-hero-btn.on { color: var(--red); }
+.modal-del-btn { min-width: 44px; min-height: 44px; }
+
+/* ── 성경 본문·주제 말씀에 명조체 — 읽는 글의 품격 ── */
+.bible-verse-text,
+.topic-verse-text,
+.story-verse-text {
+  font-family: var(--serif);
+  font-weight: 400;
+}
+
+/* ── 접히는 카드의 머리 — 짚는 곳. 종이 단추처럼 ── */
+.card.collapsible > .card-inner > .card-label,
+.card.collapsible > .card-inner > .story-section-header {
+  min-height: 56px;
+  padding: 0 16px;
+  margin: -4px -4px 4px;
+  background: var(--pp-mid);
+  border: var(--paper-line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-xs);
+  font-size: 17px; font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0;
+  text-transform: none;
+  align-items: center;
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+}
+.card.collapsible > .card-inner > .card-label:active,
+.card.collapsible > .card-inner > .story-section-header:active {
+  background: var(--gold-pale);
+  transform: scale(0.98);
+  box-shadow: none;
+}
+.card.collapsible > .card-inner > .card-label::before { display: none; }
+.card.collapsible .collapse-chevron {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--gold-pale);
+  color: var(--gold);
+  font-size: 13px;
+}
+.card.collapsible:not(.collapsed) > .card-inner > .card-label,
+.card.collapsible:not(.collapsed) > .card-inner > .story-section-header {
+  margin-bottom: 12px;
+}
+.card.collapsible .collapse-hint { font-size: 13px; color: var(--ink3); }
+
+/* 카드 제목도 명조체로 — 잡지 소제목 느낌 */
+.card-label, .story-section-header {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--ink);
+}
+
+/* ── 말로 쓰기 단추들 격자 (유리 테마와 동일) ── */
+.mic-row.full {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.mic-btn {
+  font-size: 15px;
+  justify-content: center;
+  min-height: 52px;
+}
+.mic-btn-icon { font-size: 19px; }
+.mic-row.full > .mic-btn:last-child:nth-child(odd) { grid-column: 1 / -1; }
+.card-inner { container-type: inline-size; }
+@container (max-width: 260px) {
+  .mic-row.full { grid-template-columns: 1fr; }
+}
+.bible-size-btn {
+  min-height: 48px; padding: 12px 18px;
+  font-size: 15px;
+}
+
+/* ── 눈이 피로할 때는 움직임을 끕니다 ── */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
